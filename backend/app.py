@@ -1,4 +1,6 @@
-from flask import Flask, jsonify
+# app.py
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import db, Group, Student
 
@@ -49,4 +51,6 @@ def create_student():
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
