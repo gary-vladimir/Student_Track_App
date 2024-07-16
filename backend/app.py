@@ -11,9 +11,28 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-@app.route("/")
-def home_route():
-    return jsonify({"message": "Home Route"})
+db.init_app(app)
+
+
+@app.route("/api/groups", methods=["GET"])
+def get_groups():
+    groups = Group.query.all()
+    return jsonify([group.to_dict() for group in groups])
+
+
+@app.route("/api/groups/<int:group_id>/students", methods=["GET"])
+def get_students_by_group(group_id):
+    students = Student.query.filter_by(group_id=group_id).all()
+    return jsonify([student.to_dict() for student in students])
+
+
+@app.route("/api/groups", methods=["POST"])
+def create_group():
+    data = request.get_json()
+    new_group = Group(title=data["title"])
+    db.session.add(new_group)
+    db.session.commit()
+    return jsonify(new_group.to_dict()), 201
 
 
 @app.route("/api/data", methods=["GET"])
