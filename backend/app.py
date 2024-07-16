@@ -35,10 +35,17 @@ def create_group():
     return jsonify(new_group.to_dict()), 201
 
 
-@app.route("/api/data", methods=["GET"])
-def get_data():
-    data = {"message": "Hello Gary from Flask!"}
-    return jsonify(data)
+@app.route("/api/students", methods=["POST"])
+def create_student():
+    data = request.get_json()
+    new_student = Student(
+        name=data["name"],
+        attendance=data.get("attendance", False),
+        group_id=data["group_id"],
+    )
+    db.session.add(new_student)
+    db.session.commit()
+    return jsonify(new_student.to_dict()), 201
 
 
 if __name__ == "__main__":
