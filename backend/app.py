@@ -42,7 +42,9 @@ def create_student():
     data = request.get_json()
     new_student = Student(
         name=data["name"],
-        attendance=data.get("attendance", False),
+        payment_day=data["payment_day"],
+        status=data["status"],
+        parent_phone_number=data["parent_phone_number"],
         group_id=data["group_id"],
     )
     db.session.add(new_student)
@@ -52,5 +54,6 @@ def create_student():
 
 if __name__ == "__main__":
     with app.app_context():
+        # db.drop_all()
         db.create_all()
     app.run(debug=True)
