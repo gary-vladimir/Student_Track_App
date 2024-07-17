@@ -26,6 +26,8 @@ class Student(db.Model):
     status = db.Column(db.String(50), nullable=False)
     parent_phone_number = db.Column(db.String(20), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey("groups.id"), nullable=False)
+    cost = db.Column(db.Integer, nullable=False, default=0)
+    paid_amount = db.Column(db.Integer, nullable=False, default=0)
 
     def to_dict(self):
         return {
@@ -34,4 +36,6 @@ class Student(db.Model):
             "payment_day": self.payment_day,
             "status": self.status,
             "parent_phone_number": self.parent_phone_number,
+            "cost": self.cost,
+            "paid_amount": self.paid_amount,
         }
