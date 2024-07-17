@@ -54,5 +54,15 @@ def create_student():
     return jsonify(new_student.to_dict()), 201
 
 
+@app.route("/api/students/<int:student_id>", methods=["DELETE"])
+def delete_student(student_id):
+    student = Student.query.get(student_id)
+    if student is None:
+        return jsonify({"error": "Student not found"}), 404
+    db.session.delete(student)
+    db.session.commit()
+    return jsonify({"message": "Student deleted"}), 200
+
+
 if __name__ == "__main__":
     app.run(debug=True)
