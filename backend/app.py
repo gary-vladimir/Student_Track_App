@@ -44,6 +44,25 @@ def create_group():
     return jsonify(new_group.to_dict()), 201
 
 
+@app.route("/api/groups/<int:group_id>", methods=["PATCH"])
+def update_group(group_id):
+    data = request.get_json()
+    group = Group.query.get(group_id)
+    if group is None:
+        return jsonify({"error": "Group not found"}), 404
+
+    if "group_cost" in data:
+        if data["group_cost"] is None or not isinstance(data["group_cost"], int):
+            return (
+                jsonify({"error": "group_cost is required and must be an integer"}),
+                400,
+            )
+        group.group_cost = data["group_cost"]
+
+    db.session.commit()
+    return jsonify(group.to_dict()), 200
+
+
 @app.route("/api/students", methods=["POST"])
 def create_student():
     data = request.get_json()
