@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import db, Group, Student
+from models import db, Group, Student, student_group_association
 
 app = Flask(__name__)
 CORS(app)
@@ -26,7 +26,11 @@ def get_groups():
 
 @app.route("/api/groups/<int:group_id>/students", methods=["GET"])
 def get_students_by_group(group_id):
-    students = Student.query.filter_by(group_id=group_id).all()
+    students = (
+        Student.query.join(student_group_association)
+        .filter(student_group_association.c.group_id == group_id)
+        .all()
+    )
     return jsonify([student.to_dict() for student in students])
 
 
@@ -71,10 +75,20 @@ def create_student():
         payment_day=data["payment_day"],
         status=data["status"],
         parent_phone_number=data["parent_phone_number"],
-        group_id=data["group_id"],
+        cost=data.get("cost", 0),
+        paid_amount=data.get("paid_amount", 0),
     )
     db.session.add(new_student)
     db.session.commit()
+
+    # Add student to groups
+    group_ids = data.get("group_ids", [])
+    for group_id in group_ids:
+        group = Group.query.get(group_id)
+        if group:
+            group.students.append(new_student)
+    db.session.commit()
+
     return jsonify(new_student.to_dict()), 201
 
 
@@ -88,37 +102,39 @@ def delete_student(student_id):
     return jsonify({"message": "Student deleted"}), 200
 
 
-@app.route("/api/students/<int:student_id>", methods=["PUT"])
+@app.route("/api/students/<int:student_id>", methods=["PATCH"])
 def update_student(student_id):
     data = request.get_json()
     student = Student.query.get(student_id)
     if student is None:
         return jsonify({"error": "Student not found"}), 404
 
-    required_fields = [
+    # Validate data
+    allowed_fields = [
         "name",
         "payment_day",
         "status",
         "parent_phone_number",
         "cost",
         "paid_amount",
-        "group_id",
     ]
-    for field in required_fields:
-        if field not in data or not data[field]:
-            return jsonify({"error": f"{field} is required and cannot be blank"}), 400
+    for field in allowed_fields:
+        if field in data and data[field] is None:
+            return jsonify({"error": f"{field} cannot be blank"}), 400
 
-    group = Group.query.get(data["group_id"])
-    if group is None:
-        return jsonify({"error": "Group not found"}), 404
+    # Update student
+    for key, value in data.items():
+        if key in allowed_fields:
+            setattr(student, key, value)
 
-    student.name = data["name"]
-    student.payment_day = data["payment_day"]
-    student.status = data["status"]
-    student.parent_phone_number = data["parent_phone_number"]
-    student.cost = data["cost"]
-    student.paid_amount = data["paid_amount"]
-    student.group_id = data["group_id"]
+    # Update student groups
+    if "group_ids" in data:
+        student.groups = []
+        group_ids = data.get("group_ids", [])
+        for group_id in group_ids:
+            group = Group.query.get(group_id)
+            if group:
+                student.groups.append(group)
 
     db.session.commit()
     return jsonify(student.to_dict()), 200
