@@ -64,5 +64,41 @@ def delete_student(student_id):
     return jsonify({"message": "Student deleted"}), 200
 
 
+@app.route("/api/students/<int:student_id>", methods=["PUT"])
+def update_student(student_id):
+    data = request.get_json()
+    student = Student.query.get(student_id)
+    if student is None:
+        return jsonify({"error": "Student not found"}), 404
+
+    required_fields = [
+        "name",
+        "payment_day",
+        "status",
+        "parent_phone_number",
+        "cost",
+        "paid_amount",
+        "group_id",
+    ]
+    for field in required_fields:
+        if field not in data or not data[field]:
+            return jsonify({"error": f"{field} is required and cannot be blank"}), 400
+
+    group = Group.query.get(data["group_id"])
+    if group is None:
+        return jsonify({"error": "Group not found"}), 404
+
+    student.name = data["name"]
+    student.payment_day = data["payment_day"]
+    student.status = data["status"]
+    student.parent_phone_number = data["parent_phone_number"]
+    student.cost = data["cost"]
+    student.paid_amount = data["paid_amount"]
+    student.group_id = data["group_id"]
+
+    db.session.commit()
+    return jsonify(student.to_dict()), 200
+
+
 if __name__ == "__main__":
     app.run(debug=True)
