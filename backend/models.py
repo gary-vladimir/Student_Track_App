@@ -32,12 +32,19 @@ class Student(db.Model):
     paid_amount = db.Column(db.Integer, nullable=False, default=0)
 
     def to_dict(self):
+        group_cost_sum = (
+            db.session.query(db.func.sum(Group.group_cost))
+            .join(Student)
+            .filter(Student.id == self.id)
+            .scalar()
+            or 0
+        )
         return {
             "id": self.id,
             "name": self.name,
             "payment_day": self.payment_day,
             "status": self.status,
             "parent_phone_number": self.parent_phone_number,
-            "cost": self.cost,
+            "cost": self.cost or group_cost_sum,
             "paid_amount": self.paid_amount,
         }
