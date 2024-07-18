@@ -9,11 +9,13 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     students = db.relationship("Student", backref="group", lazy=True)
+    group_cost = db.Column(db.Integer, nullable=False)
 
     def to_dict(self):
         return {
             "id": self.id,
             "title": self.title,
+            "group_cost": self.group_cost,
             "students": [student.to_dict() for student in self.students],
         }
 

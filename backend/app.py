@@ -33,7 +33,12 @@ def get_students_by_group(group_id):
 @app.route("/api/groups", methods=["POST"])
 def create_group():
     data = request.get_json()
-    new_group = Group(title=data["title"])
+    if "title" not in data or not data["title"]:
+        return jsonify({"error": "Title is required and cannot be blank"}), 400
+    if "group_cost" not in data or not isinstance(data["group_cost"], int):
+        return jsonify({"error": "group_cost is required and must be an integer"}), 400
+
+    new_group = Group(title=data["title"], group_cost=data["group_cost"])
     db.session.add(new_group)
     db.session.commit()
     return jsonify(new_group.to_dict()), 201
