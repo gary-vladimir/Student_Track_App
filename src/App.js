@@ -5,11 +5,12 @@ import Home from './components/Home';
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-      </Routes>
-    </Router>
+    <div className='bg-[#E7F9FA] p-36 min-h-screen'>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+        </Routes>
+      </Router></div>
   );
 };
 
