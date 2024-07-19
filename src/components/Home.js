@@ -22,8 +22,8 @@ const Home = () => {
     }
 
     return (
-        <div className="p-6">
-            <h1 className="text-5xl font-bold mb-6">Groups</h1>
+        <div className="">
+            <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Groups</h1>
             <div className="flex flex-wrap">
                 {groups.map(group => (
                     <div key={group.id} className="border border-gray-300 rounded-lg m-2 p-4 w-64 shadow-lg">
