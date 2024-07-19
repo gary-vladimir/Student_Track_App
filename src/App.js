@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
 
-function App() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    axios.get('http://127.0.0.1:5000/api/data')
-      .then(response => {
-        setData(response.data.message);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data!', error);
-      });
-  }, []);
-
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>{data ? data : 'Loading...'}</h1>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
