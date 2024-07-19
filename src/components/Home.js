@@ -29,6 +29,7 @@ const Home = () => {
                     <div key={group.id} className="border border-gray-300 rounded-lg m-2 p-4 w-64 shadow-lg">
                         <h3 className="text-xl font-semibold">{group.title}</h3>
                         <p className="mt-2">Number of students: {group.students.length}</p>
+                        <div>${group.group_cost}</div>
                     </div>
                 ))}
             </div>
