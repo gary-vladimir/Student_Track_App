@@ -33,6 +33,7 @@ const Home = () => {
                             <p className=" text-[#2F4858]">Number of students: {group.students.length}</p>
                         </div>
                         <div className='absolute top-1 right-2 text-[#F26419]'>${group.group_cost}</div>
+                        <div className='bg-white text-center font-medium transition-colors delay-75 text-[#2F4858]/75 hover:text-[#2F4858] border-t hover:cursor-pointer hover:bg-[#55DDE0] rounded-b-lg border-[#69A1CB] py-2'>View all details</div>
                     </div>
                 ))}
             </div>
