@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import './scrollbar.css';
 
 body {
   margin: 0;
