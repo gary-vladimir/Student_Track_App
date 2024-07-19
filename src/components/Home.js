@@ -1,6 +1,7 @@
 // src/components/Home.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import decoration from '../assets/search_app_decoration.svg';
 
 const Home = () => {
     const [groups, setGroups] = useState([]);
@@ -33,6 +34,12 @@ const Home = () => {
                     </div>
                 ))}
             </div>
+            <img
+                src={decoration}
+                alt="Decorative SVG"
+                className="absolute bottom-5 right-5"
+                style={{ height: '75vh' }}
+            />
         </div>
     );
 };
