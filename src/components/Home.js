@@ -1,7 +1,6 @@
 // src/components/Home.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 const Home = () => {
     const [groups, setGroups] = useState([]);
@@ -19,17 +18,17 @@ const Home = () => {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="text-center text-xl">Loading...</div>;
     }
 
     return (
-        <div>
-            <h1>Groups</h1>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className="p-6">
+            <h1 className="text-3xl font-bold mb-6">Groups</h1>
+            <div className="flex flex-wrap">
                 {groups.map(group => (
-                    <div key={group.id} style={{ border: '1px solid #ccc', borderRadius: '8px', margin: '10px', padding: '10px', width: '200px' }}>
-                        <h3>{group.title}</h3>
-                        <p>Number of students: {group.students.length}</p>
+                    <div key={group.id} className="border border-gray-300 rounded-lg m-2 p-4 w-64 shadow-lg">
+                        <h3 className="text-xl font-semibold">{group.title}</h3>
+                        <p className="mt-2">Number of students: {group.students.length}</p>
                     </div>
                 ))}
             </div>
