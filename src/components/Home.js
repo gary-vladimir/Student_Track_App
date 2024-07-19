@@ -32,7 +32,7 @@ const Home = () => {
                             <h3 className="text-xl text-[#2F4858] font-semibold">{group.title}</h3>
                             <p className=" text-[#2F4858]">Number of students: {group.students.length}</p>
                         </div>
-                        <div className='absolute top-1 right-2'>${group.group_cost}</div>
+                        <div className='absolute top-1 right-2 text-[#F26419]'>${group.group_cost}</div>
                     </div>
                 ))}
             </div>
