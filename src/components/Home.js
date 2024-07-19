@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import decoration from '../assets/search_app_decoration.svg';
+import addIcon from '../assets/BigAddButton.svg';
+
 
 const Home = () => {
     const [groups, setGroups] = useState([]);
@@ -24,7 +26,16 @@ const Home = () => {
 
     return (
         <div className="">
-            <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Groups</h1>
+            <div className='flex items-center'>
+                <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Groups</h1>
+                <button>
+                    <img
+                        src={addIcon}
+                        alt="Add Group Icon"
+                        className='h-[40px] mb-3 ml-3'
+                    />
+                </button>
+            </div>
             <div className="flex z-50 flex-wrap">
                 {groups.map(group => (
                     <div key={group.id} className="border-2 relative border-[#69A1CB] backdrop-blur-lg bg-white/50 rounded-lg m-2 w-64 shadow-sm">
