@@ -4,6 +4,7 @@ import axios from 'axios';
 import decoration from '../assets/search_app_decoration.svg';
 import addIcon from '../assets/BigAddButton.svg';
 import '../scrollbar.css';
+import { useNavigate } from 'react-router-dom';
 
 const dummyGroups = [
     {
@@ -93,6 +94,7 @@ const dummyGroups = [
 const Home = () => {
     const [groups, setGroups] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/api/groups')
@@ -113,7 +115,7 @@ const Home = () => {
         <div className="">
             <div className='flex items-center'>
                 <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Groups</h1>
-                <button className='hover:scale-110 transition'>
+                <button className='hover:scale-110 transition' onClick={() => navigate('/create-group')}>
                     <img
                         src={addIcon}
                         alt="Add Group Icon"
@@ -122,7 +124,7 @@ const Home = () => {
                 </button>
             </div>
             <div className="grid pr-2 grid-cols-4 grid-rows-[auto_auto] overflow-y-auto relative max-h-[50vh] gap-5 z-50">
-                {dummyGroups.map(group => (
+                {groups.map(group => (
                     <div key={group.id} className="border-2 relative border-[#69A1CB] backdrop-blur-lg bg-white/50 rounded-lg w-full shadow-sm">
                         <div className='p-4'>
                             <h3 className="text-xl text-[#2F4858] font-semibold">{group.title}</h3>
