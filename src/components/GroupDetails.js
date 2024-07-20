@@ -1,12 +1,14 @@
 // src/components/GroupDetails.js
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import BackBtn from "../assets/BackButton.svg";
 
 const GroupDetails = () => {
   const { id } = useParams();
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -29,8 +31,20 @@ const GroupDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-6">{group.title}</h1>
+    <div>
+      <h1 className="text-5xl flex font-bold mb-6 text-[#2F4858]">
+        {" "}
+        <div className="flex">
+          <button onClick={() => navigate("/")}>
+            <img
+              src={BackBtn}
+              alt="Add Group Icon"
+              className="h-[40px] hover:scale-110 transition mt-1 mr-4"
+            />
+          </button>{" "}
+          <div>"{group.title}"</div>{" "}
+        </div>
+      </h1>
       <p className="text-lg">Group Cost: ${group.group_cost}</p>
       <p className="text-lg">Number of Students: {group.students.length}</p>
       <p className="text-lg">Group ID: {group.id}</p>
