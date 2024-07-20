@@ -24,6 +24,7 @@ const CreateGroup = () => {
 
     return (
         <div>
+            <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Add Group</h1>
             <form className="border-2 relative border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg w-[750px] shadow-sm" onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
