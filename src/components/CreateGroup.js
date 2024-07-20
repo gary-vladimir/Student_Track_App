@@ -39,7 +39,7 @@ const CreateGroup = () => {
         <div>Add Group</div>{" "}
       </h1>
       <form
-        className="border-2 relative border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg w-[750px] shadow-sm"
+        className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg w-[750px] shadow-sm"
         onSubmit={handleSubmit}
       >
         <div className="mb-4">
