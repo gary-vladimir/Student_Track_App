@@ -1,13 +1,13 @@
 // src/components/CreateGroup.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BackBtn from "../assets/BackButton.svg";
 import decoration from "../assets/add_group_decoration.svg";
 
 const CreateGroup = () => {
   const [title, setTitle] = useState("");
-  const [groupCost, setGroupCost] = useState("");
+  const [groupCost, setGroupCost] = useState(200);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -33,7 +33,7 @@ const CreateGroup = () => {
           <img
             src={BackBtn}
             alt="Add Group Icon"
-            className="h-[40px]  mt-1 mr-4"
+            className="h-[40px] hover:scale-110 transition mt-1 mr-4"
           />
         </button>{" "}
         <div>Add Group</div>{" "}
@@ -44,42 +44,51 @@ const CreateGroup = () => {
       >
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-[#2F4858] font-medium mb-2"
             htmlFor="title"
           >
-            Group Title
+            Name for group:
           </label>
           <input
             type="text"
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="ex. English Beginners 7 - 8 am "
+            className=" appearance-none border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-[#2F4858] font-medium mb-2 mt-6"
             htmlFor="groupCost"
           >
-            Group Cost
+            Cost Amount (MX)
           </label>
           <input
             type="number"
             id="groupCost"
             value={groupCost}
             onChange={(e) => setGroupCost(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className=" appearance-none border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4 justify-between">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-[#55E0A6] w-1/2 hover:scale-105 transition text-[#007242] font-bold py-2 rounded-md focus:outline-none focus:shadow-outline"
           >
-            Create Group
+            ACCEPT
+          </button>
+          <button
+            onClick={() => {
+              navigate("/");
+            }}
+            className="bg-[#D9D9D9] text-[#8C8C8C] font-bold hover:scale-105 transition w-1/2 py-2 rounded-md"
+          >
+            CANCEL
           </button>
         </div>
       </form>
