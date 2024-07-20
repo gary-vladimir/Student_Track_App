@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BackBtn from "../assets/BackButton.svg";
+import decoration from "../assets/add_group_decoration.svg";
+
 const CreateGroup = () => {
   const [title, setTitle] = useState("");
   const [groupCost, setGroupCost] = useState("");
@@ -81,6 +83,12 @@ const CreateGroup = () => {
           </button>
         </div>
       </form>
+      <img
+        src={decoration}
+        alt="Decorative SVG"
+        className="absolute bottom-8 right-8 z-0"
+        style={{ height: "65vh" }}
+      />
     </div>
   );
 };
