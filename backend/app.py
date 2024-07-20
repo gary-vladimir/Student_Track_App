@@ -24,6 +24,14 @@ def get_groups():
     return jsonify([group.to_dict() for group in groups])
 
 
+@app.route("/api/groups/<int:group_id>", methods=["GET"])
+def get_group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        return jsonify({"error": "Group not found"}), 404
+    return jsonify(group.to_dict())
+
+
 @app.route("/api/groups/<int:group_id>/students", methods=["GET"])
 def get_students_by_group(group_id):
     students = (
