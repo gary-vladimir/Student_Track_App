@@ -177,13 +177,17 @@ const GroupDetails = () => {
               </tr>
             ))}
           </tbody>
-          <button>
-            <img
-              src={addUserBtn}
-              alt="Decorative SVG"
-              className="absolute -bottom-4 -right-4 w-[50px] transition hover:scale-105 z-0"
-            />
-          </button>
+          {isEditing ? (
+            <button>
+              <img
+                src={addUserBtn}
+                alt="Decorative SVG"
+                className="absolute -bottom-4 -right-4 w-[50px] transition hover:scale-105 z-0"
+              />
+            </button>
+          ) : (
+            <div></div>
+          )}
         </table>
       </div>
       {showPopup && (
