@@ -9,6 +9,8 @@ const GroupDetails = () => {
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [groupCost, setGroupCost] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +18,7 @@ const GroupDetails = () => {
       .get(`http://127.0.0.1:5000/api/groups/${id}`)
       .then((response) => {
         setGroup(response.data);
+        setGroupCost(response.data.group_cost); // Set initial group cost
         setLoading(false);
       })
       .catch((error) => {
@@ -38,6 +41,25 @@ const GroupDetails = () => {
       .catch((error) => {
         console.error("There was an error deleting the group!", error);
       });
+  };
+
+  const handleSave = () => {
+    axios
+      .patch(`http://127.0.0.1:5000/api/groups/${id}`, {
+        group_cost: parseInt(groupCost),
+      })
+      .then((response) => {
+        setGroup(response.data);
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("There was an error updating the group cost!", error);
+      });
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setGroupCost(group.group_cost); // Reset to original cost
   };
 
   if (loading) {
@@ -63,24 +85,55 @@ const GroupDetails = () => {
           <div>"{group.title}"</div>{" "}
         </div>
         <div className="flex gap-4 text-base">
-          <button className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4">
-            EDIT
-          </button>{" "}
-          <button
-            onClick={handleDelete}
-            className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
-          >
-            DELETE
-          </button>
+          {isEditing ? (
+            <>
+              <button
+                onClick={handleSave}
+                className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+              >
+                SAVE
+              </button>{" "}
+              <button
+                onClick={handleCancel}
+                className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+              >
+                CANCEL
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+              >
+                EDIT
+              </button>{" "}
+              <button
+                onClick={handleDelete}
+                className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+              >
+                DELETE
+              </button>
+            </>
+          )}
         </div>
       </h1>
       <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg  shadow-sm">
         <p className="text-lg mb-4 flex justify-between">
           <div> Group Cost:</div>{" "}
-          <div className="font-bold text-xl text-[#F26419]">
-            {" "}
-            ${group.group_cost}{" "}
-          </div>
+          {isEditing ? (
+            <input
+              type="number"
+              value={groupCost}
+              onChange={(e) => setGroupCost(e.target.value)}
+              className="border-b-2 border-[#69A1CB] rounded w-24 py-1 px-2 text-gray-700 focus:outline-none focus:border-[#F26419]"
+            />
+          ) : (
+            <div className="font-bold text-xl text-[#F26419]">
+              {" "}
+              ${group.group_cost}{" "}
+            </div>
+          )}
         </p>
         <p className="text-lg mb-4 flex justify-between">
           <div> Number of Students: </div>{" "}
