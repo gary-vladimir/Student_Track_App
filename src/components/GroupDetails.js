@@ -89,13 +89,13 @@ const GroupDetails = () => {
             <>
               <button
                 onClick={handleSave}
-                className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+                className="bg-[#55E0A6] text-[#007242] hover:scale-110 transition h-fit rounded-md py-2 px-4"
               >
                 SAVE
               </button>{" "}
               <button
                 onClick={handleCancel}
-                className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+                className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4"
               >
                 CANCEL
               </button>
