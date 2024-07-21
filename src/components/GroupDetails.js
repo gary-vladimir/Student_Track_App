@@ -45,41 +45,47 @@ const GroupDetails = () => {
           <div>"{group.title}"</div>{" "}
         </div>
       </h1>
-      <p className="text-lg">Group Cost: ${group.group_cost}</p>
-      <p className="text-lg">Number of Students: {group.students.length}</p>
-      <p className="text-lg">Group ID: {group.id}</p>
-      <table className="min-w-full bg-white mt-6">
-        <thead>
-          <tr className="bg-[#33658A] text-white">
-            <th className="py-2 px-4 border-b font-normal text-left">
-              Student ID
-            </th>
-            <th className="py-2 px-4 border-b font-normal text-left">
-              Student Name
-            </th>
-            <th className="py-2 px-4 border-b font-normal text-left">Status</th>
-            <th className="py-2 px-4 border-b font-normal">Pending Payment</th>
-          </tr>
-        </thead>
-        <tbody>
-          {group.students.map((student) => (
-            <tr key={student.id}>
-              <td className="py-2 px-4 border-b  border-[#69A1CB]">
-                {student.id}
-              </td>
-              <td className="py-2 px-4 border-b  border-[#69A1CB]">
-                {student.name}
-              </td>
-              <td className="py-2 px-4 border-b  border-[#69A1CB]">
-                {student.status}
-              </td>
-              <td className="py-2 px-4 border-b  border-[#69A1CB] text-center">
-                {student.paid_amount}
-              </td>
+      <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg  shadow-sm">
+        <p className="text-lg">Group Cost: ${group.group_cost}</p>
+        <p className="text-lg">Number of Students: {group.students.length}</p>
+        <p className="text-lg">Group ID: {group.id}</p>
+        <table className="min-w-full bg-[#DEE9F1] mt-6">
+          <thead>
+            <tr className="bg-[#33658A] text-white">
+              <th className="py-2 px-4 border-b font-normal text-left">
+                Student ID
+              </th>
+              <th className="py-2 px-4 border-b font-normal text-left">
+                Student Name
+              </th>
+              <th className="py-2 px-4 border-b font-normal text-left">
+                Status
+              </th>
+              <th className="py-2 px-4 border-b font-normal">
+                Pending Payment
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {group.students.map((student) => (
+              <tr key={student.id}>
+                <td className="py-2 px-4 border-b  border-[#69A1CB]">
+                  {student.id}
+                </td>
+                <td className="py-2 px-4 border-b  border-[#69A1CB]">
+                  {student.name}
+                </td>
+                <td className="py-2 px-4 border-b  border-[#69A1CB]">
+                  {student.status}
+                </td>
+                <td className="py-2 px-4 border-b  border-[#69A1CB] text-center">
+                  {student.paid_amount}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
