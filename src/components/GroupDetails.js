@@ -50,20 +50,32 @@ const GroupDetails = () => {
       <p className="text-lg">Group ID: {group.id}</p>
       <table className="min-w-full bg-white mt-6">
         <thead>
-          <tr>
-            <th className="py-2 px-4 border-b">Student ID</th>
-            <th className="py-2 px-4 border-b">Name</th>
-            <th className="py-2 px-4 border-b">Status</th>
-            <th className="py-2 px-4 border-b">Pending Payment amount</th>
+          <tr className="bg-[#33658A] text-white">
+            <th className="py-2 px-4 border-b font-normal text-left">
+              Student ID
+            </th>
+            <th className="py-2 px-4 border-b font-normal text-left">
+              Student Name
+            </th>
+            <th className="py-2 px-4 border-b font-normal text-left">Status</th>
+            <th className="py-2 px-4 border-b font-normal">Pending Payment</th>
           </tr>
         </thead>
         <tbody>
           {group.students.map((student) => (
             <tr key={student.id}>
-              <td className="py-2 px-4 border-b">{student.id}</td>
-              <td className="py-2 px-4 border-b">{student.name}</td>
-              <td className="py-2 px-4 border-b">{student.status}</td>
-              <td className="py-2 px-4 border-b">{student.paid_amount}</td>
+              <td className="py-2 px-4 border-b  border-[#69A1CB]">
+                {student.id}
+              </td>
+              <td className="py-2 px-4 border-b  border-[#69A1CB]">
+                {student.name}
+              </td>
+              <td className="py-2 px-4 border-b  border-[#69A1CB]">
+                {student.status}
+              </td>
+              <td className="py-2 px-4 border-b  border-[#69A1CB] text-center">
+                {student.paid_amount}
+              </td>
             </tr>
           ))}
         </tbody>
