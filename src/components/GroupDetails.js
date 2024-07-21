@@ -32,7 +32,7 @@ const GroupDetails = () => {
 
   return (
     <div>
-      <h1 className="text-5xl flex font-bold mb-6 text-[#2F4858]">
+      <h1 className="text-5xl align-bottom justify-between flex font-bold mb-6 text-[#2F4858]">
         {" "}
         <div className="flex">
           <button onClick={() => navigate("/")}>
@@ -43,6 +43,14 @@ const GroupDetails = () => {
             />
           </button>{" "}
           <div>"{group.title}"</div>{" "}
+        </div>
+        <div className="flex gap-4 text-base">
+          <button className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4">
+            EDIT
+          </button>{" "}
+          <button className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4">
+            DELETE
+          </button>
         </div>
       </h1>
       <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg  shadow-sm">
