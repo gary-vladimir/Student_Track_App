@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BackBtn from "../assets/BackButton.svg";
+import addUserBtn from "../assets/addUser.svg";
 
 const GroupDetails = () => {
   const { id } = useParams();
@@ -68,7 +69,7 @@ const GroupDetails = () => {
         <p className="text-lg mb-4 flex justify-between">
           <div> Group ID:</div> <div className="font-bold"> {group.id}</div>
         </p>
-        <table className="min-w-full bg-[#DEE9F1] mt-6">
+        <table className="min-w-full bg-[#DEE9F1] mt-6 relative">
           <thead>
             <tr className="bg-[#33658A] text-white">
               <th className="py-2 px-4 border-b font-normal text-left">
@@ -103,6 +104,13 @@ const GroupDetails = () => {
               </tr>
             ))}
           </tbody>
+          <button>
+            <img
+              src={addUserBtn}
+              alt="Decorative SVG"
+              className="absolute -bottom-4 -right-4 w-[50px] transition hover:scale-105 z-0"
+            />
+          </button>
         </table>
       </div>
     </div>
