@@ -53,11 +53,8 @@ const GroupDetails = () => {
           <tr>
             <th className="py-2 px-4 border-b">Student ID</th>
             <th className="py-2 px-4 border-b">Name</th>
-            <th className="py-2 px-4 border-b">Payment Day</th>
             <th className="py-2 px-4 border-b">Status</th>
-            <th className="py-2 px-4 border-b">Parent Phone Number</th>
-            <th className="py-2 px-4 border-b">Cost</th>
-            <th className="py-2 px-4 border-b">Paid Amount</th>
+            <th className="py-2 px-4 border-b">Pending Payment amount</th>
           </tr>
         </thead>
         <tbody>
@@ -65,12 +62,7 @@ const GroupDetails = () => {
             <tr key={student.id}>
               <td className="py-2 px-4 border-b">{student.id}</td>
               <td className="py-2 px-4 border-b">{student.name}</td>
-              <td className="py-2 px-4 border-b">{student.payment_day}</td>
               <td className="py-2 px-4 border-b">{student.status}</td>
-              <td className="py-2 px-4 border-b">
-                {student.parent_phone_number}
-              </td>
-              <td className="py-2 px-4 border-b">{student.cost}</td>
               <td className="py-2 px-4 border-b">{student.paid_amount}</td>
             </tr>
           ))}
