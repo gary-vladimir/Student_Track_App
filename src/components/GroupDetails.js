@@ -1,4 +1,3 @@
-// src/components/GroupDetails.js
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +8,7 @@ const GroupDetails = () => {
   const { id } = useParams();
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +22,23 @@ const GroupDetails = () => {
         console.error("There was an error fetching the group details!", error);
       });
   }, [id]);
+
+  const handleDelete = () => {
+    if (group.students.length > 0) {
+      setShowPopup(true);
+      return;
+    }
+
+    axios
+      .delete(`http://127.0.0.1:5000/api/groups/${id}`)
+      .then((response) => {
+        console.log(response.data);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("There was an error deleting the group!", error);
+      });
+  };
 
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
@@ -49,7 +66,10 @@ const GroupDetails = () => {
           <button className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4">
             EDIT
           </button>{" "}
-          <button className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4">
+          <button
+            onClick={handleDelete}
+            className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+          >
             DELETE
           </button>
         </div>
@@ -113,6 +133,22 @@ const GroupDetails = () => {
           </button>
         </table>
       </div>
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <p className="text-lg">
+              You must manually remove Students associated with this group
+              before Deleting.
+            </p>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="mt-4 bg-red-500 text-white py-2 px-4 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
