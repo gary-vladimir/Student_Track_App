@@ -32,6 +32,19 @@ def get_group(group_id):
     return jsonify(group.to_dict())
 
 
+@app.route("/api/groups/<int:group_id>", methods=["DELETE"])
+def delete_group(group_id):
+    group = Group.query.get(group_id)
+    if group is None:
+        return jsonify({"error": "Group not found"}), 404
+    if len(group.students) > 0:
+        return jsonify({"error": "Group has students. Cannot delete."}), 400
+
+    db.session.delete(group)
+    db.session.commit()
+    return jsonify({"message": "Group deleted"}), 200
+
+
 @app.route("/api/groups/<int:group_id>/students", methods=["GET"])
 def get_students_by_group(group_id):
     students = (
