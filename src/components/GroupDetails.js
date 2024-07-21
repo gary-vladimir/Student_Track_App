@@ -46,9 +46,20 @@ const GroupDetails = () => {
         </div>
       </h1>
       <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg  shadow-sm">
-        <p className="text-lg">Group Cost: ${group.group_cost}</p>
-        <p className="text-lg">Number of Students: {group.students.length}</p>
-        <p className="text-lg">Group ID: {group.id}</p>
+        <p className="text-lg mb-4 flex justify-between">
+          <div> Group Cost:</div>{" "}
+          <div className="font-bold text-xl text-[#F26419]">
+            {" "}
+            ${group.group_cost}{" "}
+          </div>
+        </p>
+        <p className="text-lg mb-4 flex justify-between">
+          <div> Number of Students: </div>{" "}
+          <div className="font-bold"> {group.students.length} </div>
+        </p>
+        <p className="text-lg mb-4 flex justify-between">
+          <div> Group ID:</div> <div className="font-bold"> {group.id}</div>
+        </p>
         <table className="min-w-full bg-[#DEE9F1] mt-6">
           <thead>
             <tr className="bg-[#33658A] text-white">
