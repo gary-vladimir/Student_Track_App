@@ -1,5 +1,6 @@
 # models.py
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -57,4 +58,20 @@ class Student(db.Model):
             "parent_phone_number": self.parent_phone_number,
             "cost": self.cost or group_cost_sum,
             "paid_amount": self.paid_amount,
+        }
+
+
+class Payment(db.Model):
+    __tablename__ = "payments"
+    id = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    student_id = db.Column(db.Integer, db.ForeignKey("students.id"), nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "amount": self.amount,
+            "date": self.date.isoformat(),
+            "student_id": self.student_id,
         }
