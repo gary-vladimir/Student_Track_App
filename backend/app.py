@@ -20,7 +20,7 @@ migrate = Migrate(app, db)
 
 @app.route("/api/groups", methods=["GET"])
 def get_groups():
-    groups = Group.query.all()
+    groups = Group.query.order_by(Group.id).all()
     return jsonify([group.to_dict() for group in groups])
 
 
