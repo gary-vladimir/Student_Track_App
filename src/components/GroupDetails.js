@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BackBtn from "../assets/BackButton.svg";
 import addUserBtn from "../assets/addUser.svg";
+import removeUserBtn from "../assets/removeUser.svg";
 
 const GroupDetails = () => {
   const { id } = useParams();
@@ -152,7 +153,7 @@ const GroupDetails = () => {
                 Student Name
               </th>
               <th className="py-2 px-4 border-b font-normal text-left">
-                Status
+                This Month Status
               </th>
               <th className="py-2 px-4 border-b font-normal">
                 Pending Payment
@@ -171,8 +172,19 @@ const GroupDetails = () => {
                 <td className="py-2 px-4 border-b  border-[#69A1CB]">
                   {student.status}
                 </td>
-                <td className="py-2 px-4 border-b  border-[#69A1CB] text-center">
+                <td className="py-2 flex justify-between px-4 border-b  border-[#69A1CB] text-center">
                   {student.paid_amount}
+                  {isEditing ? (
+                    <button className="transition hover:scale-105">
+                      <img
+                        src={removeUserBtn}
+                        className="w-[20px]"
+                        alt="Decorative SVG"
+                      />
+                    </button>
+                  ) : (
+                    <div></div>
+                  )}
                 </td>
               </tr>
             ))}
