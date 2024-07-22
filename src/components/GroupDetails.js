@@ -155,7 +155,7 @@ const GroupDetails = () => {
               <th className="py-2 px-4 border-b font-normal text-left">
                 This Month Status
               </th>
-              <th className="py-2 px-4 border-b font-normal">
+              <th className="py-2 px-4 border-b text-left font-normal">
                 Pending Payment
               </th>
             </tr>
@@ -179,7 +179,7 @@ const GroupDetails = () => {
                       <img
                         src={removeUserBtn}
                         className="w-[20px]"
-                        alt="Decorative SVG"
+                        alt="Remove user icon"
                       />
                     </button>
                   ) : (
