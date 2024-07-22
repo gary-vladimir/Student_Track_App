@@ -12,6 +12,7 @@ const GroupDetails = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [groupCost, setGroupCost] = useState("");
+  const [editedStudents, setEditedStudents] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +20,8 @@ const GroupDetails = () => {
       .get(`http://127.0.0.1:5000/api/groups/${id}`)
       .then((response) => {
         setGroup(response.data);
-        setGroupCost(response.data.group_cost); // Set initial group cost
+        setGroupCost(response.data.group_cost);
+        setEditedStudents(response.data.students);
         setLoading(false);
       })
       .catch((error) => {
@@ -56,11 +58,42 @@ const GroupDetails = () => {
       .catch((error) => {
         console.error("There was an error updating the group cost!", error);
       });
+
+    // Remove students from group
+    const removedStudents = group.students.filter(
+      (student) =>
+        !editedStudents.some((editedStudent) => editedStudent.id === student.id)
+    );
+    removedStudents.forEach((student) => {
+      axios
+        .delete(`http://127.0.0.1:5000/api/groups/${id}/students/${student.id}`)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error(
+            "There was an error removing the student from the group!",
+            error
+          );
+        });
+    });
+
+    setGroup((prevGroup) => ({
+      ...prevGroup,
+      students: editedStudents,
+    }));
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-    setGroupCost(group.group_cost); // Reset to original cost
+    setGroupCost(group.group_cost);
+    setEditedStudents(group.students);
+  };
+
+  const handleRemoveStudent = (studentId) => {
+    setEditedStudents((prevStudents) =>
+      prevStudents.filter((student) => student.id !== studentId)
+    );
   };
 
   if (loading) {
@@ -161,7 +194,7 @@ const GroupDetails = () => {
             </tr>
           </thead>
           <tbody>
-            {group.students.map((student) => (
+            {editedStudents.map((student) => (
               <tr key={student.id}>
                 <td className="py-2 px-4 border-b  border-[#69A1CB]">
                   {student.id}
@@ -175,7 +208,10 @@ const GroupDetails = () => {
                 <td className="py-2 flex justify-between px-4 border-b  border-[#69A1CB] text-center">
                   {student.paid_amount}
                   {isEditing ? (
-                    <button className="transition hover:scale-105">
+                    <button
+                      onClick={() => handleRemoveStudent(student.id)}
+                      className="transition hover:scale-105"
+                    >
                       <img
                         src={removeUserBtn}
                         className="w-[20px]"
