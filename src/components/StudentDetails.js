@@ -46,11 +46,20 @@ const StudentDetails = () => {
   };
 
   const handleSave = () => {
-    const updatedStudent = { name, parent_phone_number: parentPhoneNumber };
+    const updatedStudent = {
+      name,
+      parent_phone_number: parentPhoneNumber,
+      payments: student.payments || [],
+      groups: student.groups || [],
+    };
+
     axios
       .patch(`http://127.0.0.1:5000/api/students/${id}`, updatedStudent)
       .then((response) => {
-        setStudent(response.data);
+        const updatedData = response.data;
+        updatedData.payments = updatedData.payments || [];
+        updatedData.groups = updatedData.groups || [];
+        setStudent(updatedData);
         setIsEditing(false);
       })
       .catch((error) => {
@@ -128,7 +137,7 @@ const StudentDetails = () => {
           )}
         </div>
       </h1>
-      <div className="border-2 relative border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
+      <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
         <p className="text-lg mb-4 flex justify-between">
           <div>Student ID:</div>
           <div className="font-bold">{student.id}</div>
