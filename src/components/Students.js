@@ -56,7 +56,7 @@ const Students = () => {
         <div>Students 🧑‍🏫 </div>{" "}
       </h1>
       <div className="flex gap-6">
-        <div className="w-1/2">
+        <div className="w-1/2 h-[45vh] overflow-auto pr-2">
           <ul>
             {students.map((student) => (
               <li
