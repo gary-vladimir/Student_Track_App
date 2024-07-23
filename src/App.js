@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import CreateGroup from "./components/CreateGroup";
 import GroupDetails from "./components/GroupDetails";
 import Students from "./components/Students";
+import StudentDetails from "./components/StudentDetails";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route exact path="/create-group" element={<CreateGroup />} />
           <Route path="/group/:id" element={<GroupDetails />} />
           <Route path="/students" element={<Students />} />
+          <Route path="/student/:id" element={<StudentDetails />} />
         </Routes>
       </Router>
     </div>
