@@ -69,7 +69,7 @@ const Students = () => {
           </ul>
         </div>
         <div className="w-1/2 ">
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
             <h2 className="text-2xl font-bold mb-4">Add New Student</h2>
             <form onSubmit={handleAddStudent}>
               <div className="mb-4">
