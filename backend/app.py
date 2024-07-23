@@ -189,6 +189,12 @@ def add_payment(student_id):
     return jsonify(payment.to_dict()), 201
 
 
+@app.route("/api/students", methods=["GET"])
+def get_students():
+    students = Student.query.all()
+    return jsonify([student.to_dict() for student in students])
+
+
 # Endpoint to get student details including payments
 @app.route("/api/students/<int:student_id>", methods=["GET"])
 def get_student(student_id):
