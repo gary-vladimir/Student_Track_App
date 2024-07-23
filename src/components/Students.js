@@ -56,12 +56,12 @@ const Students = () => {
         <div>Students 🧑‍🏫 </div>{" "}
       </h1>
       <div className="flex gap-6">
-        <div className="w-1/2 h-[45vh] overflow-auto pr-2">
-          <ul>
+        <div className="w-1/2 h-[45vh] py-1 overflow-auto pr-2">
+          <ul className="list-disc list-inside">
             {students.map((student) => (
               <li
                 key={student.id}
-                className="mb-4 p-4 border rounded bg-white shadow-md"
+                className="border-2 hover:-translate-y-1 transition hover:cursor-pointer relative z-10 border-[#69A1CB] p-3 pl-6 backdrop-blur-lg bg-white/50 rounded-lg mb-4 shadow-sm"
               >
                 {student.name}
               </li>
