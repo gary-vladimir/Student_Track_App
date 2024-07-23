@@ -226,7 +226,7 @@ const GroupDetails = () => {
             ))}
           </tbody>
           {isEditing ? (
-            <button>
+            <button onClick={() => navigate("/students")}>
               <img
                 src={addUserBtn}
                 alt="Decorative SVG"
