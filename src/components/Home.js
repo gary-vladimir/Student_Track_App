@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import decoration from "../assets/search_app_decoration.svg";
 import addIcon from "../assets/BigAddButton.svg";
+import studentBtn from "../assets/students_Button.svg";
+
 import "../scrollbar.css";
 import { useNavigate } from "react-router-dom";
 
@@ -29,18 +31,33 @@ const Home = () => {
 
   return (
     <div className="">
-      <div className="flex items-center">
-        <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Groups</h1>
-        <button
-          className="hover:scale-110 transition"
-          onClick={() => navigate("/create-group")}
-        >
-          <img
-            src={addIcon}
-            alt="Add Group Icon"
-            className="h-[40px] mb-3 ml-3"
-          />
-        </button>
+      <div className="flex justify-between relative z-10">
+        <div className="flex">
+          <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Groups</h1>
+          <button
+            className="hover:scale-110 transition"
+            onClick={() => navigate("/create-group")}
+          >
+            <img
+              src={addIcon}
+              alt="Add Group Icon"
+              className="h-[40px] mb-3 ml-3"
+            />
+          </button>
+        </div>
+        <div className="flex">
+          <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Students</h1>
+          <button
+            className="hover:scale-110 transition"
+            onClick={() => navigate("/students")}
+          >
+            <img
+              src={studentBtn}
+              alt="Add Group Icon"
+              className="h-[40px] mb-3 ml-3"
+            />
+          </button>
+        </div>
       </div>
       <div className="grid pr-2 grid-cols-4 grid-rows-[auto_auto] overflow-y-auto relative max-h-[50vh] gap-5 z-50">
         {groups.map((group) => (
