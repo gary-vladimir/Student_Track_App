@@ -114,7 +114,7 @@ const Students = () => {
               </div>
               <button
                 type="submit"
-                className="bg-[#55DDE0] text-[#2F4858] font-bold py-2 px-4 rounded hover:bg-[#4A90E2] transition"
+                className="bg-[#55DDE0] text-[#2F4858] font-bold py-2 px-4 rounded hover:scale-110 transition"
               >
                 CREATE
               </button>
