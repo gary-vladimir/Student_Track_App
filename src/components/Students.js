@@ -43,62 +43,69 @@ const Students = () => {
   }
 
   return (
-    <div className="flex">
-      <div className="w-1/2 p-6">
+    <div>
+      <h1 className="text-5xl flex font-bold mb-6 text-[#2F4858]">
+        {" "}
         <button onClick={() => navigate("/")}>
           <img
             src={BackBtn}
-            alt="Back Button"
-            className="h-10 hover:scale-110 transition"
+            alt="Add Group Icon"
+            className="h-[40px] hover:scale-110 transition mt-1 mr-4"
           />
-        </button>
-        <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Students</h1>
-        <ul>
-          {students.map((student) => (
-            <li
-              key={student.id}
-              className="mb-4 p-4 border rounded bg-white shadow-md"
-            >
-              {student.name}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="w-1/2 p-6">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4">Add New Student</h2>
-          <form onSubmit={handleAddStudent}>
-            <div className="mb-4">
-              <label className="block text-gray-700">Full Name:</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
-                placeholder="Enter full name here"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Tutor Phone Number:</label>
-              <input
-                type="text"
-                id="parentPhoneNumber"
-                value={parentPhoneNumber}
-                onChange={(e) => setParentPhoneNumber(e.target.value)}
-                className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
-                placeholder="ex: +52 953 340 4382"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-[#69A1CB] text-white font-bold py-2 px-4 rounded hover:bg-[#4A90E2] transition"
-            >
-              CREATE
-            </button>
-          </form>
+        </button>{" "}
+        <div>Students 🧑‍🏫 </div>{" "}
+      </h1>
+      <div className="flex gap-6">
+        <div className="w-1/2">
+          <ul>
+            {students.map((student) => (
+              <li
+                key={student.id}
+                className="mb-4 p-4 border rounded bg-white shadow-md"
+              >
+                {student.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="w-1/2 ">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Add New Student</h2>
+            <form onSubmit={handleAddStudent}>
+              <div className="mb-4">
+                <label className="block text-gray-700">Full Name:</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
+                  placeholder="Enter full name here"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">
+                  Tutor Phone Number:
+                </label>
+                <input
+                  type="text"
+                  id="parentPhoneNumber"
+                  value={parentPhoneNumber}
+                  onChange={(e) => setParentPhoneNumber(e.target.value)}
+                  className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
+                  placeholder="ex: +52 953 340 4382"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-[#69A1CB] text-white font-bold py-2 px-4 rounded hover:bg-[#4A90E2] transition"
+              >
+                CREATE
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
