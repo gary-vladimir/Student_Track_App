@@ -17,9 +17,13 @@ const StudentDetails = () => {
     axios
       .get(`http://127.0.0.1:5000/api/students/${id}`)
       .then((response) => {
-        setStudent(response.data);
-        setName(response.data.name);
-        setParentPhoneNumber(response.data.parent_phone_number);
+        const studentData = response.data;
+        // Ensure default values
+        studentData.payments = studentData.payments || [];
+        studentData.groups = studentData.groups || [];
+        setStudent(studentData);
+        setName(studentData.name);
+        setParentPhoneNumber(studentData.parent_phone_number);
         setLoading(false);
       })
       .catch((error) => {
@@ -124,7 +128,7 @@ const StudentDetails = () => {
           )}
         </div>
       </h1>
-      <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
+      <div className="border-2 relative border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
         <p className="text-lg mb-4 flex justify-between">
           <div>Student ID:</div>
           <div className="font-bold">{student.id}</div>

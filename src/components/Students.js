@@ -45,6 +45,9 @@ const Students = () => {
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
   }
+  const handleStudentClick = (id) => {
+    navigate(`/student/${id}`);
+  };
 
   return (
     <div>
@@ -76,6 +79,7 @@ const Students = () => {
               <li
                 key={student.id}
                 className="border-2 hover:-translate-y-1 transition hover:cursor-pointer relative z-10 border-[#69A1CB] p-3 pl-6 backdrop-blur-lg bg-white/50 rounded-lg mb-4 shadow-sm"
+                onClick={() => handleStudentClick(student.id)}
               >
                 {student.name}
               </li>
