@@ -81,9 +81,11 @@ const Students = () => {
           </ul>
         </div>
         <div className="w-1/2 ">
-          <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
-            <h2 className="text-2xl font-bold mb-4">Add New Student</h2>
-            <form onSubmit={handleAddStudent}>
+          <div className="border-2 relative z-10 border-[#69A1CB] backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
+            <h2 className="text-2xl bg-gradient-to-r from-[#69A1CB] to-[#55DDE0] font-semibold text-white p-3 pl-6 mb-4">
+              Add New Student
+            </h2>
+            <form className="px-6 pb-6" onSubmit={handleAddStudent}>
               <div className="mb-4">
                 <label className="block text-gray-700">Full Name:</label>
                 <input
@@ -112,7 +114,7 @@ const Students = () => {
               </div>
               <button
                 type="submit"
-                className="bg-[#69A1CB] text-white font-bold py-2 px-4 rounded hover:bg-[#4A90E2] transition"
+                className="bg-[#55DDE0] text-[#2F4858] font-bold py-2 px-4 rounded hover:bg-[#4A90E2] transition"
               >
                 CREATE
               </button>
