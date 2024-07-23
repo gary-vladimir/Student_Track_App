@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import BackBtn from "../assets/BackButton.svg";
 import decoration from "../assets/decoration.svg";
 import decoration2 from "../assets/decorationPlants.svg";
+import "react-phone-input-2/lib/style.css";
+import PhoneInput from "react-phone-input-2";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -102,13 +104,13 @@ const Students = () => {
                 <label className="block text-gray-700">
                   Tutor Phone Number:
                 </label>
-                <input
-                  type="text"
-                  id="parentPhoneNumber"
+                <PhoneInput
+                  country={"us"}
                   value={parentPhoneNumber}
-                  onChange={(e) => setParentPhoneNumber(e.target.value)}
-                  className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
+                  onChange={(phone) => setParentPhoneNumber(phone)}
+                  inputClass="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
                   placeholder="ex: +52 953 340 4382"
+                  inputStyle={{ width: "100%" }}
                   required
                 />
               </div>
