@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BackBtn from "../assets/BackButton.svg";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const StudentDetails = () => {
   const { id } = useParams();
@@ -149,12 +151,14 @@ const StudentDetails = () => {
         <p className="text-lg mb-4 flex justify-between">
           <div>Phone Number:</div>
           {isEditing ? (
-            <input
-              type="text"
-              value={parentPhoneNumber}
-              onChange={(e) => setParentPhoneNumber(e.target.value)}
-              className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
-            />
+            <div>
+              <PhoneInput
+                country={"us"}
+                value={parentPhoneNumber}
+                onChange={(phone) => setParentPhoneNumber(phone)}
+                required
+              />
+            </div>
           ) : (
             <div className="font-bold">{student.parent_phone_number}</div>
           )}
