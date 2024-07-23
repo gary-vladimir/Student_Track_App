@@ -35,29 +35,18 @@ class Group(db.Model):
 class Student(db.Model):
     __tablename__ = "students"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    payment_day = db.Column(db.Integer, nullable=False)
-    status = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(80), nullable=False)
     parent_phone_number = db.Column(db.String(20), nullable=False)
-    cost = db.Column(db.Integer, nullable=False, default=0)
-    paid_amount = db.Column(db.Integer, nullable=False, default=0)
+    payments = db.relationship(
+        "Payment", backref="student", cascade="all, delete-orphan"
+    )
 
     def to_dict(self):
-        group_cost_sum = (
-            db.session.query(db.func.sum(Group.group_cost))
-            .join(student_group_association)
-            .filter(student_group_association.c.student_id == self.id)
-            .scalar()
-            or 0
-        )
         return {
             "id": self.id,
             "name": self.name,
-            "payment_day": self.payment_day,
-            "status": self.status,
             "parent_phone_number": self.parent_phone_number,
-            "cost": self.cost or group_cost_sum,
-            "paid_amount": self.paid_amount,
+            "payments": [payment.to_dict() for payment in self.payments],
         }
 
 
