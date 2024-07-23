@@ -139,7 +139,7 @@ const StudentDetails = () => {
           )}
         </div>
       </h1>
-      <div className="border-2 relative z-10 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
+      <div className="border-2 relative border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
         <p className="text-lg mb-4 flex justify-between">
           <div>Student ID:</div>
           <div className="font-bold">{student.id}</div>
