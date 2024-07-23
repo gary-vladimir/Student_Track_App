@@ -203,10 +203,10 @@ const GroupDetails = () => {
                   {student.name}
                 </td>
                 <td className="py-2 px-4 border-b  border-[#69A1CB]">
-                  {student.status}
+                  PENDING
                 </td>
                 <td className="py-2 flex justify-between px-4 border-b  border-[#69A1CB] text-center">
-                  {student.paid_amount}
+                  $0
                   {isEditing ? (
                     <button
                       onClick={() => handleRemoveStudent(student.id)}

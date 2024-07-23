@@ -1,9 +1,8 @@
-# app.py
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import db, Group, Student, student_group_association
+from models import db, Group, Student, Payment, student_group_association
 
 app = Flask(__name__)
 CORS(app)
@@ -93,11 +92,7 @@ def create_student():
     data = request.get_json()
     new_student = Student(
         name=data["name"],
-        payment_day=data["payment_day"],
-        status=data["status"],
         parent_phone_number=data["parent_phone_number"],
-        cost=data.get("cost", 0),
-        paid_amount=data.get("paid_amount", 0),
     )
     db.session.add(new_student)
     db.session.commit()
@@ -133,11 +128,7 @@ def update_student(student_id):
     # Validate data
     allowed_fields = [
         "name",
-        "payment_day",
-        "status",
         "parent_phone_number",
-        "cost",
-        "paid_amount",
     ]
     for field in allowed_fields:
         if field in data and data[field] is None:
@@ -178,6 +169,34 @@ def remove_student_from_group(group_id, student_id):
         return jsonify({"message": "Student removed from group"}), 200
     else:
         return jsonify({"error": "Student not in group"}), 400
+
+
+@app.route("/api/students/<int:student_id>/payments", methods=["POST"])
+def add_payment(student_id):
+    data = request.get_json()
+    amount = data.get("amount")
+    if amount is None:
+        return jsonify({"error": "Amount is required"}), 400
+
+    student = Student.query.get(student_id)
+    if student is None:
+        return jsonify({"error": "Student not found"}), 404
+
+    payment = Payment(amount=amount, student_id=student_id)
+    db.session.add(payment)
+    db.session.commit()
+
+    return jsonify(payment.to_dict()), 201
+
+
+# Endpoint to get student details including payments
+@app.route("/api/students/<int:student_id>", methods=["GET"])
+def get_student(student_id):
+    student = Student.query.get(student_id)
+    if student is None:
+        return jsonify({"error": "Student not found"}), 404
+
+    return jsonify(student.to_dict()), 200
 
 
 if __name__ == "__main__":
