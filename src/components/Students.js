@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import BackBtn from "../assets/BackButton.svg";
+import decoration from "../assets/decoration.svg";
+import decoration2 from "../assets/decorationPlants.svg";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -44,6 +46,16 @@ const Students = () => {
 
   return (
     <div>
+      <img
+        src={decoration2}
+        alt="Decorative SVG"
+        className="absolute bottom-0 left-0 z-0"
+      />
+      <img
+        src={decoration}
+        alt="Decorative SVG"
+        className="absolute top-0 right-0 z-0"
+      />
       <h1 className="text-5xl flex font-bold mb-6 text-[#2F4858]">
         {" "}
         <button onClick={() => navigate("/")}>
