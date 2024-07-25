@@ -86,7 +86,7 @@ const StudentDetails = () => {
   return (
     <div>
       <h1 className="text-5xl align-bottom justify-between flex font-bold mb-6 text-[#2F4858]">
-        <div className="flex">
+        <div className="flex w-full">
           <button onClick={() => navigate("/students")}>
             <img
               src={BackBtn}
@@ -94,13 +94,13 @@ const StudentDetails = () => {
               className="h-[40px] hover:scale-110 transition mt-1 mr-4"
             />
           </button>
-          <div>
+          <div className="w-full pr-6">
             {isEditing ? (
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
+                className="border-b-2 border-[#69A1CB] w-full text-3xl rounded py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
               />
             ) : (
               student.name
