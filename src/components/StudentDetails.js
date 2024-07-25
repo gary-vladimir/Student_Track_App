@@ -4,6 +4,7 @@ import axios from "axios";
 import BackBtn from "../assets/BackButton.svg";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const StudentDetails = () => {
   const { id } = useParams();
@@ -76,6 +77,11 @@ const StudentDetails = () => {
   if (!student) {
     return <div className="text-center text-xl">Student not found</div>;
   }
+  const formattedPhoneNumber = parsePhoneNumberFromString(
+    parentPhoneNumber.startsWith("+")
+      ? parentPhoneNumber
+      : `+${parentPhoneNumber}`
+  );
 
   return (
     <div>
@@ -160,7 +166,11 @@ const StudentDetails = () => {
               />
             </div>
           ) : (
-            <div className="font-bold">{student.parent_phone_number}</div>
+            <div className="font-bold">
+              {formattedPhoneNumber
+                ? formattedPhoneNumber.formatInternational()
+                : "Undefined or Invalid Phone Number"}
+            </div>
           )}
         </p>
         <p className="text-lg mb-4">
