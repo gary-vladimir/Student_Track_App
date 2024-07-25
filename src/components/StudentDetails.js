@@ -107,6 +107,10 @@ const StudentDetails = () => {
       });
   };
 
+  const handleClosePopup = () => {
+    setShowAddGroupPopup(false);
+  };
+
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
   }
