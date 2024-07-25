@@ -242,7 +242,10 @@ const StudentDetails = () => {
                 )}
               </p>
               <div className="flex w-full gap-4 justify-between">
-                <button className="w-1/2 bg-[#55DDE0] hover:scale-105 transition  py-2 rounded-lg">
+                <button
+                  onClick={handleAddGroup}
+                  className="w-1/2 bg-[#55DDE0] hover:scale-105 transition  py-2 rounded-lg"
+                >
                   Add to Group
                 </button>
                 <button className="w-1/2 bg-[#F26419]  hover:scale-105 transition rounded-lg text-white">
