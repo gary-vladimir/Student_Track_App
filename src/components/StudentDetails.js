@@ -126,6 +126,35 @@ const StudentDetails = () => {
 
   return (
     <div>
+      {showAddGroupPopup && (
+        <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center relative">
+            <button
+              className="absolute top-2 right-2"
+              onClick={handleClosePopup}
+            >
+              X
+            </button>
+            <h2 className="mb-4">Add Student to Group</h2>
+            <ul>
+              {availableGroups.length === 0 ? (
+                <li>No available groups</li>
+              ) : (
+                availableGroups.map((group) => (
+                  <li
+                    key={group.id}
+                    className="cursor-pointer hover:bg-gray-200 p-2 rounded"
+                    onClick={() => handleSelectGroup(group.id)}
+                  >
+                    {group.title}
+                  </li>
+                ))
+              )}
+            </ul>
+          </div>
+        </div>
+      )}
+
       <h1 className="text-5xl align-bottom justify-between flex font-bold mb-6 text-[#2F4858]">
         <div className="flex w-full">
           <button onClick={() => navigate("/students")}>
