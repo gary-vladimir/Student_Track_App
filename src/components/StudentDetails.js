@@ -152,11 +152,7 @@ const StudentDetails = () => {
             <div className="font-bold">{student.id}</div>
           </p>
           <p className="text-lg mb-4 flex justify-between">
-            <div>Full Name:</div>
-            <div className="font-bold">{student.name}</div>
-          </p>
-          <p className="text-lg mb-4 flex justify-between">
-            <div>Phone Number:</div>
+            <div>Tutor Phone Number:</div>
             {isEditing ? (
               <div>
                 <PhoneInput
