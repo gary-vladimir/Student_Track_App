@@ -145,63 +145,68 @@ const StudentDetails = () => {
           )}
         </div>
       </h1>
-      <div className="border-2 relative border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
-        <p className="text-lg mb-4 flex justify-between">
-          <div>Student ID:</div>
-          <div className="font-bold">{student.id}</div>
-        </p>
-        <p className="text-lg mb-4 flex justify-between">
-          <div>Full Name:</div>
-          <div className="font-bold">{student.name}</div>
-        </p>
-        <p className="text-lg mb-4 flex justify-between">
-          <div>Phone Number:</div>
-          {isEditing ? (
-            <div>
-              <PhoneInput
-                country={"us"}
-                value={parentPhoneNumber}
-                onChange={(phone) => setParentPhoneNumber(phone)}
-                required
-              />
-            </div>
-          ) : (
-            <div className="font-bold">
-              {formattedPhoneNumber
-                ? formattedPhoneNumber.formatInternational()
-                : "Undefined or Invalid Phone Number"}
-            </div>
-          )}
-        </p>
-        <p className="text-lg mb-4">
-          <div className="font-bold">Payments:</div>
-          {student.payments.length === 0 ? (
-            <div>No payments found</div>
-          ) : (
-            <ul>
-              {student.payments.map((payment) => (
-                <li key={payment.id} className="ml-4 list-disc">
-                  Amount: ${payment.amount}, Date:{" "}
-                  {new Date(payment.date).toLocaleDateString()}
-                </li>
-              ))}
-            </ul>
-          )}
-        </p>
-        <p className="text-lg mb-4">
-          <div className="font-bold">Groups:</div>
-          {student.groups.length === 0 ? (
-            <div>No groups found</div>
-          ) : (
-            <ul>
-              {student.groups.map((group) => (
-                <li key={group.id} className="ml-4 list-disc">
-                  {group.title}
-                </li>
-              ))}
-            </ul>
-          )}
-        </p>
+      <div className="flex gap-4">
+        <div className="border-2 relative w-1/2 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
+          <p className="text-lg mb-4 flex justify-between">
+            <div>Student ID:</div>
+            <div className="font-bold">{student.id}</div>
+          </p>
+          <p className="text-lg mb-4 flex justify-between">
+            <div>Full Name:</div>
+            <div className="font-bold">{student.name}</div>
+          </p>
+          <p className="text-lg mb-4 flex justify-between">
+            <div>Phone Number:</div>
+            {isEditing ? (
+              <div>
+                <PhoneInput
+                  country={"us"}
+                  value={parentPhoneNumber}
+                  onChange={(phone) => setParentPhoneNumber(phone)}
+                  required
+                />
+              </div>
+            ) : (
+              <div className="font-bold">
+                {formattedPhoneNumber
+                  ? formattedPhoneNumber.formatInternational()
+                  : "Undefined or Invalid Phone Number"}
+              </div>
+            )}
+          </p>
+          <p className="text-lg mb-4">
+            <div className="font-bold">Payments:</div>
+            {student.payments.length === 0 ? (
+              <div>No payments found</div>
+            ) : (
+              <ul>
+                {student.payments.map((payment) => (
+                  <li key={payment.id} className="ml-4 list-disc">
+                    Amount: ${payment.amount}, Date:{" "}
+                    {new Date(payment.date).toLocaleDateString()}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </p>
+          <p className="text-lg mb-4">
+            <div className="font-bold">Groups:</div>
+            {student.groups.length === 0 ? (
+              <div>No groups found</div>
+            ) : (
+              <ul>
+                {student.groups.map((group) => (
+                  <li key={group.id} className="ml-4 list-disc">
+                    {group.title}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </p>
+        </div>
+        <div className="border-2 relative w-1/2 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
+          payments
+        </div>
       </div>
       {showConfirmPopup && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
