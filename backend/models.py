@@ -47,6 +47,7 @@ class Student(db.Model):
             "name": self.name,
             "parent_phone_number": self.parent_phone_number,
             "payments": [payment.to_dict() for payment in self.payments],
+            "groups": [{"id": group.id, "title": group.title} for group in self.groups],
         }
 
 
