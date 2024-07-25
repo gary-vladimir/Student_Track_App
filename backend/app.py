@@ -152,6 +152,23 @@ def update_student(student_id):
     return jsonify(student.to_dict()), 200
 
 
+@app.route("/api/groups/<int:group_id>/students", methods=["POST"])
+def add_student_to_group(group_id):
+    data = request.get_json()
+    student_id = data.get("student_id")
+
+    group = Group.query.get(group_id)
+    student = Student.query.get(student_id)
+
+    if not group or not student:
+        return jsonify({"error": "Group or student not found"}), 404
+
+    group.students.append(student)
+    db.session.commit()
+
+    return jsonify({"message": "Student added to group"}), 200
+
+
 @app.route("/api/groups/<int:group_id>/students/<int:student_id>", methods=["DELETE"])
 def remove_student_from_group(group_id, student_id):
     group = Group.query.get(group_id)
