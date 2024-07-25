@@ -145,7 +145,7 @@ const StudentDetails = () => {
           )}
         </div>
       </h1>
-      <div className="flex gap-6">
+      <div className="flex gap-6 text-[#2F4858]">
         <div className="border-2 relative w-1/2 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
           <p className="text-lg mb-4 flex justify-between">
             <div>Student ID:</div>
@@ -181,11 +181,13 @@ const StudentDetails = () => {
           </p>
           <div className="h-[2px] w-full bg-[#AECFE4]"></div>
           <p className="text-lg mb-4">
-            <div className="font-bold">Groups:</div>
+            <div className=" mt-4 mb-2">Belongs to the following Groups:</div>
             {student.groups.length === 0 ? (
-              <div>No groups found</div>
+              <div className="w-full bg-[#DEE9F1] text-sm flex justify-center text-[#2F4858]/50 min-h-[50px] rounded-lg p-4">
+                This Student is not enrolled in any group
+              </div>
             ) : (
-              <ul>
+              <ul className="w-full bg-[#DEE9F1] text-sm flex min-h-[50px] rounded-lg p-4">
                 {student.groups.map((group) => (
                   <li key={group.id} className="ml-4 list-disc">
                     {group.title}
@@ -194,6 +196,14 @@ const StudentDetails = () => {
               </ul>
             )}
           </p>
+          <div className="flex w-full gap-4 justify-between">
+            <button className="w-1/2 bg-[#55DDE0] hover:scale-105 transition  py-2 rounded-lg">
+              Add to Group
+            </button>
+            <button className="w-1/2 bg-[#F26419]  hover:scale-105 transition rounded-lg text-white">
+              Remove From Groups
+            </button>
+          </div>
         </div>
         <div className="border-2 relative w-1/2 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
           payments
