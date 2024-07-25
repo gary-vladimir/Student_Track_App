@@ -89,6 +89,24 @@ const StudentDetails = () => {
       });
   };
 
+  const handleSelectGroup = (groupId) => {
+    axios
+      .post(`http://127.0.0.1:5000/api/groups/${groupId}/students`, {
+        student_id: student.id,
+      })
+      .then((response) => {
+        const updatedGroups = [...student.groups, response.data];
+        setStudent({ ...student, groups: updatedGroups });
+        setShowAddGroupPopup(false);
+      })
+      .catch((error) => {
+        console.error(
+          "There was an error adding the student to the group!",
+          error
+        );
+      });
+  };
+
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
   }
