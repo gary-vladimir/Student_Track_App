@@ -145,12 +145,13 @@ const StudentDetails = () => {
           )}
         </div>
       </h1>
-      <div className="flex gap-4">
+      <div className="flex gap-6">
         <div className="border-2 relative w-1/2 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
           <p className="text-lg mb-4 flex justify-between">
             <div>Student ID:</div>
             <div className="font-bold">{student.id}</div>
           </p>
+
           <p className="text-lg mb-4 flex justify-between">
             <div>Tutor Phone Number:</div>
             {isEditing ? (
@@ -170,21 +171,15 @@ const StudentDetails = () => {
               </div>
             )}
           </p>
-          <p className="text-lg mb-4">
-            <div className="font-bold">Payments:</div>
-            {student.payments.length === 0 ? (
-              <div>No payments found</div>
-            ) : (
-              <ul>
-                {student.payments.map((payment) => (
-                  <li key={payment.id} className="ml-4 list-disc">
-                    Amount: ${payment.amount}, Date:{" "}
-                    {new Date(payment.date).toLocaleDateString()}
-                  </li>
-                ))}
-              </ul>
-            )}
+          <p className="text-lg mb-4 flex justify-between">
+            <div>This Month Status:</div>
+            <div className="font-bold">PENDING</div>
           </p>
+          <p className="text-lg mb-4 flex justify-between">
+            <div>Pending Paying Amount:</div>
+            <div className="font-bold">$600</div>
+          </p>
+          <div className="h-[2px] w-full bg-[#AECFE4]"></div>
           <p className="text-lg mb-4">
             <div className="font-bold">Groups:</div>
             {student.groups.length === 0 ? (
