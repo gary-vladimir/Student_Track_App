@@ -15,6 +15,8 @@ const StudentDetails = () => {
   const [parentPhoneNumber, setParentPhoneNumber] = useState("");
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const navigate = useNavigate();
+  const [showAddGroupPopup, setShowAddGroupPopup] = useState(false);
+  const [availableGroups, setAvailableGroups] = useState([]);
 
   useEffect(() => {
     axios
