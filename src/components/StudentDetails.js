@@ -72,6 +72,23 @@ const StudentDetails = () => {
       });
   };
 
+  const handleAddGroup = () => {
+    axios
+      .get("http://127.0.0.1:5000/api/groups")
+      .then((response) => {
+        const allGroups = response.data;
+        const studentGroupIds = student.groups.map((g) => g.id);
+        const filteredGroups = allGroups.filter(
+          (group) => !studentGroupIds.includes(group.id)
+        );
+        setAvailableGroups(filteredGroups);
+        setShowAddGroupPopup(true);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the groups!", error);
+      });
+  };
+
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
   }
