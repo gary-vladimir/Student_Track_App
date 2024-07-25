@@ -171,43 +171,55 @@ const StudentDetails = () => {
               </div>
             )}
           </p>
-          <p className="text-lg mb-4 flex justify-between">
-            <div>This Month Status:</div>
-            <div className="font-bold">PENDING</div>
-          </p>
-          <p className="text-lg mb-4 flex justify-between">
-            <div>Pending Paying Amount:</div>
-            <div className="font-bold">$600</div>
-          </p>
-          <div className="h-[2px] w-full bg-[#AECFE4]"></div>
-          <p className="text-lg mb-4">
-            <div className=" mt-4 mb-2">Belongs to the following Groups:</div>
-            {student.groups.length === 0 ? (
-              <div className="w-full bg-[#DEE9F1] text-sm flex justify-center text-[#2F4858]/50 min-h-[50px] rounded-lg p-4">
-                This Student is not enrolled in any group
+          {!isEditing ? (
+            <div>
+              <p className="text-lg mb-4 flex justify-between">
+                <div>This Month Status:</div>
+                <div className="font-bold">PENDING</div>
+              </p>
+              <p className="text-lg mb-4 flex justify-between">
+                <div>Pending Paying Amount:</div>
+                <div className="font-bold">$600</div>
+              </p>
+              <div className="h-[2px] w-full bg-[#AECFE4]"></div>
+              <p className="text-lg mb-4">
+                <div className=" mt-4 mb-2">
+                  Belongs to the following Groups:
+                </div>
+                {student.groups.length === 0 ? (
+                  <div className="w-full bg-[#DEE9F1] text-sm flex justify-center text-[#2F4858]/50 min-h-[50px] rounded-lg p-4">
+                    This Student is not enrolled in any group
+                  </div>
+                ) : (
+                  <ul className="w-full bg-[#DEE9F1] text-sm flex min-h-[50px] rounded-lg p-4">
+                    {student.groups.map((group) => (
+                      <li key={group.id} className="ml-4 list-disc">
+                        {group.title}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </p>
+              <div className="flex w-full gap-4 justify-between">
+                <button className="w-1/2 bg-[#55DDE0] hover:scale-105 transition  py-2 rounded-lg">
+                  Add to Group
+                </button>
+                <button className="w-1/2 bg-[#F26419]  hover:scale-105 transition rounded-lg text-white">
+                  Remove From Groups
+                </button>
               </div>
-            ) : (
-              <ul className="w-full bg-[#DEE9F1] text-sm flex min-h-[50px] rounded-lg p-4">
-                {student.groups.map((group) => (
-                  <li key={group.id} className="ml-4 list-disc">
-                    {group.title}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </p>
-          <div className="flex w-full gap-4 justify-between">
-            <button className="w-1/2 bg-[#55DDE0] hover:scale-105 transition  py-2 rounded-lg">
-              Add to Group
-            </button>
-            <button className="w-1/2 bg-[#F26419]  hover:scale-105 transition rounded-lg text-white">
-              Remove From Groups
-            </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+        {isEditing ? (
+          <div></div>
+        ) : (
+          <div className="border-2 relative w-1/2 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
+            payments
           </div>
-        </div>
-        <div className="border-2 relative w-1/2 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
-          payments
-        </div>
+        )}
       </div>
       {showConfirmPopup && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
