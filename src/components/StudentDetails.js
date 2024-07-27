@@ -21,6 +21,8 @@ const StudentDetails = () => {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [groupToDelete, setGroupToDelete] = useState(null);
   const [showConfirmDeletePopup, setShowConfirmDeletePopup] = useState(false);
+  const [showAddPaymentPopup, setShowAddPaymentPopup] = useState(false);
+  const [newPaymentAmount, setNewPaymentAmount] = useState("");
 
   useEffect(() => {
     axios
