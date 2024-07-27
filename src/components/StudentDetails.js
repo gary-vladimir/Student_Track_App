@@ -94,14 +94,19 @@ const StudentDetails = () => {
       .post(`http://127.0.0.1:5000/api/groups/${groupId}/students`, {
         student_id: student.id,
       })
+      .then(() => {
+        return axios.get(`http://127.0.0.1:5000/api/students/${id}`);
+      })
       .then((response) => {
-        const updatedGroups = [...student.groups, response.data];
-        setStudent({ ...student, groups: updatedGroups });
+        const updatedStudent = response.data;
+        updatedStudent.payments = updatedStudent.payments || [];
+        updatedStudent.groups = updatedStudent.groups || [];
+        setStudent(updatedStudent);
         setShowAddGroupPopup(false);
       })
       .catch((error) => {
         console.error(
-          "There was an error adding the student to the group!",
+          "There was an error updating the student information!",
           error
         );
       });
