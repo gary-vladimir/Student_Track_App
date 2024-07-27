@@ -345,19 +345,13 @@ const StudentDetails = () => {
               {isDeleteMode ? (
                 <div className="flex w-full gap-4 justify-between">
                   <button
-                    onClick={handleSave}
-                    className="w-1/2 bg-[#69A1CB] text-white hover:scale-105 transition rounded-lg py-2"
-                  >
-                    Save
-                  </button>
-                  <button
                     onClick={() => {
                       setIsDeleteMode(false);
                       setGroupToDelete(null);
                     }}
-                    className="w-1/2 bg-gray-500 text-white hover:scale-105 transition rounded-lg py-2"
+                    className="w-full font-semibold bg-[#AEC8DB] text-[#2F4858] hover:bg-[#8daabe] transition rounded-lg py-2"
                   >
-                    Cancel
+                    CANCEL
                   </button>
                 </div>
               ) : (
