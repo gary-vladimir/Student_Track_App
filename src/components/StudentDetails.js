@@ -119,6 +119,10 @@ const StudentDetails = () => {
     setShowAddGroupPopup(false);
   };
 
+  const handleDeleteMode = () => {
+    setIsDeleteMode(!isDeleteMode);
+  };
+
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
   }
