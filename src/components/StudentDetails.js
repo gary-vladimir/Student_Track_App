@@ -404,7 +404,30 @@ const StudentDetails = () => {
           <div></div>
         ) : (
           <div className="border-2 relative w-1/2 border-[#69A1CB] p-8 backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
-            payments
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold mb-2">Payments</h2>
+              {student.payments.length === 0 ? (
+                <p className="text-sm text-gray-600">No payments recorded.</p>
+              ) : (
+                <ul className="bg-gray-100 rounded p-4">
+                  {student.payments.map((payment) => (
+                    <li
+                      key={payment.id}
+                      className="flex justify-between border-b border-gray-300 py-2"
+                    >
+                      <span>${payment.amount}</span>
+                      <span>{new Date(payment.date).toLocaleString()}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <button
+              onClick={handleAddPayment}
+              className="w-full bg-[#55DDE0] hover:scale-105 transition py-2 rounded-lg"
+            >
+              Add Payment
+            </button>
           </div>
         )}
       </div>
