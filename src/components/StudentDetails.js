@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BackBtn from "../assets/BackButton.svg";
+import xIcon from "../assets/close-circle-svgrepo-com 1.svg";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
@@ -332,9 +333,9 @@ const StudentDetails = () => {
                               setGroupToDelete(group);
                               setShowConfirmDeletePopup(true);
                             }}
-                            className="absolute top-1 right-1 text-red-600"
+                            className="absolute hover:scale-105 transition -top-2 w-[25px] -right-2"
                           >
-                            x
+                            <img src={xIcon}></img>
                           </button>
                         )}
                       </li>
