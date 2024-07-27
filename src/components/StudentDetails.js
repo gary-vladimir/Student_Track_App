@@ -164,23 +164,25 @@ const StudentDetails = () => {
     <div>
       {showConfirmDeletePopup && (
         <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <p className="mb-4">
-              Are you sure you want to remove {student.name} from the group:{" "}
-              {groupToDelete?.title}?
+          <div className="bg-white p-8 w-[500px] rounded-lg shadow-lg text-center">
+            <p className="mb-6">
+              Are you sure you want to remove {student.name} from the group: "
+              {groupToDelete?.title}"?
             </p>
-            <button
-              onClick={handleConfirmDelete}
-              className="bg-red-500 text-white py-2 px-4 rounded mr-4"
-            >
-              Yes
-            </button>
-            <button
-              onClick={() => setShowConfirmDeletePopup(false)}
-              className="bg-gray-500 text-white py-2 px-4 rounded"
-            >
-              No
-            </button>
+            <div className="w-full flex">
+              <button
+                onClick={handleConfirmDelete}
+                className="bg-red-500 text-white w-1/2 py-2 px-4 rounded mr-4"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowConfirmDeletePopup(false)}
+                className="bg-gray-500 w-1/2 text-white py-2 px-4 rounded"
+              >
+                No
+              </button>
+            </div>
           </div>
         </div>
       )}
