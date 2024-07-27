@@ -285,17 +285,40 @@ const StudentDetails = () => {
                   </ul>
                 )}
               </p>
-              <div className="flex w-full gap-4 justify-between">
-                <button
-                  onClick={handleAddGroup}
-                  className="w-1/2 bg-[#55DDE0] hover:scale-105 transition  py-2 rounded-lg"
-                >
-                  Add to Group
-                </button>
-                <button className="w-1/2 bg-[#F26419]  hover:scale-105 transition rounded-lg text-white">
-                  Remove From Groups
-                </button>
-              </div>
+              {isDeleteMode ? (
+                <div className="flex w-full gap-4 justify-between">
+                  <button
+                    onClick={handleSave}
+                    className="w-1/2 bg-[#69A1CB] text-white hover:scale-105 transition rounded-lg py-2"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsDeleteMode(false);
+                      setGroupToDelete(null);
+                    }}
+                    className="w-1/2 bg-gray-500 text-white hover:scale-105 transition rounded-lg py-2"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <div className="flex w-full gap-4 justify-between">
+                  <button
+                    onClick={handleAddGroup}
+                    className="w-1/2 bg-[#55DDE0] hover:scale-105 transition py-2 rounded-lg"
+                  >
+                    Add to Group
+                  </button>
+                  <button
+                    onClick={handleDeleteMode}
+                    className="w-1/2 bg-[#F26419] hover:scale-105 transition rounded-lg text-white"
+                  >
+                    Remove From Groups
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div></div>
