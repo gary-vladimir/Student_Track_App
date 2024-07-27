@@ -437,15 +437,15 @@ const StudentDetails = () => {
               Payments
             </h2>
             <div className="flex flex-col grow p-6">
-              <div className=" mb-4 grow bg-[#DEE9F1] rounded-md">
+              <div className=" mb-4 grow bg-[#DEE9F1] h-[200px] overflow-auto rounded-md">
                 {student.payments.length === 0 ? (
-                  <p>No payments recorded.</p>
+                  <p className="m-4">No payments recorded.</p>
                 ) : (
                   <ul>
                     {student.payments.map((payment) => (
                       <li
                         key={payment.id}
-                        className="flex justify-between border-b border-gray-300 py-2"
+                        className="flex px-6 justify-between border-b border-gray-300 py-2"
                       >
                         <span>${payment.amount}</span>
                         <span>{new Date(payment.date).toLocaleString()}</span>
