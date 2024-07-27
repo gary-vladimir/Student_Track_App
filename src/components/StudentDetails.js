@@ -189,10 +189,10 @@ const StudentDetails = () => {
         <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-lg text-center relative">
             <button
-              className="absolute top-2 right-2"
+              className="absolute w-[35px] -top-3 -right-3"
               onClick={handleClosePopup}
             >
-              X
+              <img src={xIcon}></img>
             </button>
             <h2 className="mb-4">Add Student to Group</h2>
             <ul>
