@@ -53,6 +53,29 @@ const StudentDetails = () => {
       });
   };
 
+  const handleConfirmDelete = () => {
+    axios
+      .delete(
+        `http://127.0.0.1:5000/api/groups/${groupToDelete.id}/students/${student.id}`
+      )
+      .then(() => {
+        setStudent({
+          ...student,
+          groups: student.groups.filter(
+            (group) => group.id !== groupToDelete.id
+          ),
+        });
+        setShowConfirmDeletePopup(false);
+        setIsDeleteMode(false);
+      })
+      .catch((error) => {
+        console.error(
+          "There was an error removing the student from the group!",
+          error
+        );
+      });
+  };
+
   const handleSave = () => {
     const updatedStudent = {
       name,
@@ -138,6 +161,29 @@ const StudentDetails = () => {
 
   return (
     <div>
+      {showConfirmDeletePopup && (
+        <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+            <p className="mb-4">
+              Are you sure you want to remove {student.name} from the group:{" "}
+              {groupToDelete?.title}?
+            </p>
+            <button
+              onClick={handleConfirmDelete}
+              className="bg-red-500 text-white py-2 px-4 rounded mr-4"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => setShowConfirmDeletePopup(false)}
+              className="bg-gray-500 text-white py-2 px-4 rounded"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
+
       {showAddGroupPopup && (
         <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-lg text-center relative">
@@ -286,7 +332,7 @@ const StudentDetails = () => {
                               setGroupToDelete(group);
                               setShowConfirmDeletePopup(true);
                             }}
-                            className="absolute z-50 top-1 right-1 text-red-600"
+                            className="absolute top-1 right-1 text-red-600"
                           >
                             x
                           </button>
