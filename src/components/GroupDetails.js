@@ -97,7 +97,7 @@ const GroupDetails = () => {
   };
 
   const handleStudentClick = (studentId) => {
-    navigate(`/students/${studentId}`);
+    navigate(`/student/${studentId}`);
   };
 
   if (loading) {
@@ -199,7 +199,11 @@ const GroupDetails = () => {
           </thead>
           <tbody>
             {editedStudents.map((student) => (
-              <tr key={student.id}>
+              <tr
+                key={student.id}
+                onClick={() => handleStudentClick(student.id)}
+                className="hover:bg-[#c4d6e4] transition hover:cursor-pointer"
+              >
                 <td className="py-2 px-4 border-b  border-[#69A1CB]">
                   {student.id}
                 </td>
