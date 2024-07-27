@@ -277,9 +277,20 @@ const StudentDetails = () => {
                     {student.groups.map((group) => (
                       <li
                         key={group.id}
-                        className="bg-white p-2 shadow-md rounded-full"
+                        className="bg-white p-2 shadow-md rounded-full relative"
                       >
                         {group.title}
+                        {isDeleteMode && (
+                          <button
+                            onClick={() => {
+                              setGroupToDelete(group);
+                              setShowConfirmDeletePopup(true);
+                            }}
+                            className="absolute z-50 top-1 right-1 text-red-600"
+                          >
+                            x
+                          </button>
+                        )}
                       </li>
                     ))}
                   </ul>
