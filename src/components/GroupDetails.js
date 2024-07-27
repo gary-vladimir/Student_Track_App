@@ -96,6 +96,10 @@ const GroupDetails = () => {
     );
   };
 
+  const handleStudentClick = (studentId) => {
+    navigate(`/students/${studentId}`);
+  };
+
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
   }
