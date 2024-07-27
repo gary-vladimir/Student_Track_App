@@ -140,6 +140,25 @@ const StudentDetails = () => {
         );
       });
   };
+
+  const handleConfirmPayment = () => {
+    axios
+      .post(`http://127.0.0.1:5000/api/students/${id}/payments`, {
+        amount: newPaymentAmount,
+      })
+      .then((response) => {
+        setStudent((prevStudent) => ({
+          ...prevStudent,
+          payments: [...prevStudent.payments, response.data],
+        }));
+        setShowAddPaymentPopup(false);
+        setNewPaymentAmount("");
+      })
+      .catch((error) => {
+        console.error("There was an error adding the payment!", error);
+      });
+  };
+
   const handleAddPayment = () => setShowAddPaymentPopup(true);
 
   const handleClosePopup = () => {
