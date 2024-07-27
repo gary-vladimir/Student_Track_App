@@ -140,6 +140,7 @@ const StudentDetails = () => {
         );
       });
   };
+  const handleAddPayment = () => setShowAddPaymentPopup(true);
 
   const handleClosePopup = () => {
     setShowAddGroupPopup(false);
