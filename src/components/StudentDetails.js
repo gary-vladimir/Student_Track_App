@@ -187,14 +187,14 @@ const StudentDetails = () => {
 
       {showAddGroupPopup && (
         <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center relative">
+          <div className="bg-white p-8 text-[#2F4858] rounded-lg shadow-lg relative">
             <button
               className="absolute w-[35px] -top-3 -right-3"
               onClick={handleClosePopup}
             >
               <img src={xIcon}></img>
             </button>
-            <h2 className="mb-4">Add Student to Group</h2>
+            <h2 className="mb-4 font-semibold text-xl">Available Groups:</h2>
             <ul>
               {availableGroups.length === 0 ? (
                 <li>No available groups</li>
@@ -202,7 +202,7 @@ const StudentDetails = () => {
                 availableGroups.map((group) => (
                   <li
                     key={group.id}
-                    className="cursor-pointer hover:bg-gray-200 p-2 rounded"
+                    className="cursor-pointer border-2 mb-2 pl-4 border-[#69A1CB] hover:scale-105 transition min-w-[300px] list-disc list-inside p-2 rounded-lg"
                     onClick={() => handleSelectGroup(group.id)}
                   >
                     {group.title}
