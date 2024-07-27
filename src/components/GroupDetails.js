@@ -240,16 +240,16 @@ const GroupDetails = () => {
       </div>
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <p className="text-lg">
+          <div className="bg-white p-6 w-[400px] rounded-lg shadow-lg">
+            <p className="text-lg text-center">
               You must manually remove Students associated with this group
               before Deleting.
             </p>
             <button
               onClick={() => setShowPopup(false)}
-              className="mt-4 bg-red-500 text-white py-2 px-4 rounded"
+              className="mt-4 bg-[#AEC8DB] text-[#2F4858] font-semibold hover:bg-[#98b8cf] w-full py-2 px-4 rounded"
             >
-              Close
+              CLOSE
             </button>
           </div>
         </div>
