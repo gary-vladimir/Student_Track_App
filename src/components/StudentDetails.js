@@ -261,9 +261,12 @@ const StudentDetails = () => {
                     This Student is not enrolled in any group
                   </div>
                 ) : (
-                  <ul className="w-full bg-[#DEE9F1] text-sm flex min-h-[50px] rounded-lg p-4">
+                  <ul className="w-full bg-[#DEE9F1] text-sm flex gap-2 min-h-[50px] rounded-lg p-4">
                     {student.groups.map((group) => (
-                      <li key={group.id} className="ml-4 list-disc">
+                      <li
+                        key={group.id}
+                        className="bg-white p-2 shadow-md rounded-full"
+                      >
                         {group.title}
                       </li>
                     ))}
