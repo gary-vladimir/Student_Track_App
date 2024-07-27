@@ -184,6 +184,35 @@ const StudentDetails = () => {
 
   return (
     <div>
+      {showAddPaymentPopup && (
+        <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+            <h2 className="mb-4 font-semibold text-xl">Add Payment</h2>
+            <input
+              type="number"
+              value={newPaymentAmount}
+              onChange={(e) => setNewPaymentAmount(e.target.value)}
+              placeholder="Enter payment amount"
+              className="border-2 border-gray-300 rounded p-2 mb-4 w-full"
+            />
+            <div className="w-full flex">
+              <button
+                onClick={handleConfirmPayment}
+                className="bg-blue-500 text-white w-1/2 py-2 px-4 rounded mr-4"
+              >
+                Add
+              </button>
+              <button
+                onClick={() => setShowAddPaymentPopup(false)}
+                className="bg-gray-500 text-white w-1/2 py-2 px-4 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showConfirmDeletePopup && (
         <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-8 w-[500px] rounded-lg shadow-lg text-center">
