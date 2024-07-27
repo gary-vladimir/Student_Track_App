@@ -17,6 +17,9 @@ const StudentDetails = () => {
   const navigate = useNavigate();
   const [showAddGroupPopup, setShowAddGroupPopup] = useState(false);
   const [availableGroups, setAvailableGroups] = useState([]);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [groupToDelete, setGroupToDelete] = useState(null);
+  const [showConfirmDeletePopup, setShowConfirmDeletePopup] = useState(false);
 
   useEffect(() => {
     axios
