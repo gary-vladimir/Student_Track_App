@@ -206,6 +206,24 @@ def add_payment(student_id):
     return jsonify(payment.to_dict()), 201
 
 
+@app.route(
+    "/api/students/<int:student_id>/payments/<int:payment_id>", methods=["DELETE"]
+)
+def delete_payment(student_id, payment_id):
+    student = Student.query.get(student_id)
+    if student is None:
+        return jsonify({"error": "Student not found"}), 404
+
+    payment = Payment.query.get(payment_id)
+    if payment is None or payment.student_id != student_id:
+        return jsonify({"error": "Payment not found for this student"}), 404
+
+    db.session.delete(payment)
+    db.session.commit()
+
+    return jsonify({"message": "Payment deleted"}), 200
+
+
 @app.route("/api/students", methods=["GET"])
 def get_students():
     students = Student.query.all()
