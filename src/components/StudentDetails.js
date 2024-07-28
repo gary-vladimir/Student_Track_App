@@ -60,6 +60,25 @@ const StudentDetails = () => {
       });
   };
 
+  const handleDeletePayment = () => {
+    axios
+      .delete(
+        `http://127.0.0.1:5000/api/students/${id}/payments/${paymentToDelete.id}`
+      )
+      .then(() => {
+        setStudent({
+          ...student,
+          payments: student.payments.filter(
+            (payment) => payment.id !== paymentToDelete.id
+          ),
+        });
+        setShowConfirmDeletePaymentPopup(false);
+      })
+      .catch((error) => {
+        console.error("There was an error deleting the payment!", error);
+      });
+  };
+
   const handleConfirmDelete = () => {
     axios
       .delete(
