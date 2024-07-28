@@ -23,6 +23,10 @@ const StudentDetails = () => {
   const [showConfirmDeletePopup, setShowConfirmDeletePopup] = useState(false);
   const [showAddPaymentPopup, setShowAddPaymentPopup] = useState(false);
   const [newPaymentAmount, setNewPaymentAmount] = useState("");
+  const [hoveredPaymentId, setHoveredPaymentId] = useState(null);
+  const [paymentToDelete, setPaymentToDelete] = useState(null);
+  const [showConfirmDeletePaymentPopup, setShowConfirmDeletePaymentPopup] =
+    useState(false);
 
   useEffect(() => {
     axios
