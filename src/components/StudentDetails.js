@@ -271,6 +271,32 @@ const StudentDetails = () => {
         </div>
       )}
 
+      {showConfirmDeletePaymentPopup && (
+        <div className="fixed inset-0 z-10 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+            <p className="mb-4">
+              Are you sure you want to delete this payment of $
+              {paymentToDelete?.amount} made on{" "}
+              {new Date(paymentToDelete?.date).toLocaleString()}?
+            </p>
+            <div className="flex w-full">
+              <button
+                onClick={handleDeletePayment}
+                className="bg-red-500 text-white w-1/2 py-2 px-4 rounded mr-4"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowConfirmDeletePaymentPopup(false)}
+                className="bg-gray-500 text-white w-1/2 py-2 px-4 rounded"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <h1 className="text-5xl align-bottom justify-between flex font-bold mb-6 text-[#2F4858]">
         <div className="flex w-full">
           <button onClick={() => navigate("/students")}>
