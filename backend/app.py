@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 from models import db, Group, Student, Payment, student_group_association
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
