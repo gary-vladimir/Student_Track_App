@@ -199,7 +199,10 @@ def add_payment(student_id):
     if student is None:
         return jsonify({"error": "Student not found"}), 404
 
-    payment = Payment(amount=amount, student_id=student_id)
+    total_group_cost = sum(group.group_cost for group in student.groups)
+    payment = Payment(
+        amount=amount, student_id=student_id, group_cost_at_payment=total_group_cost
+    )
     db.session.add(payment)
     db.session.commit()
 
