@@ -524,32 +524,34 @@ const StudentDetails = () => {
                   <p className="m-4">No payments recorded.</p>
                 ) : (
                   <ul>
-                    {student.payments.map((payment) => (
-                      <li
-                        key={payment.id}
-                        onMouseEnter={() => setHoveredPaymentId(payment.id)}
-                        onMouseLeave={() => setHoveredPaymentId(null)}
-                        className={`relative flex px-6 justify-between border-b border-gray-300 py-2 ${
-                          hoveredPaymentId === payment.id
-                            ? "bg-[#2F4858]/20"
-                            : ""
-                        }`}
-                      >
-                        <span>${payment.amount}</span>
-                        <span>{new Date(payment.date).toLocaleString()}</span>
-                        {hoveredPaymentId === payment.id && (
-                          <button
-                            onClick={() => {
-                              setPaymentToDelete(payment);
-                              setShowConfirmDeletePaymentPopup(true);
-                            }}
-                            className="absolute right-1/2 top-1/2 transform -translate-y-1/2 translate-x-1/2 text-white font-semibold"
-                          >
-                            DELETE
-                          </button>
-                        )}
-                      </li>
-                    ))}
+                    {student.payments
+                      .sort((a, b) => new Date(b.date) - new Date(a.date))
+                      .map((payment) => (
+                        <li
+                          key={payment.id}
+                          onMouseEnter={() => setHoveredPaymentId(payment.id)}
+                          onMouseLeave={() => setHoveredPaymentId(null)}
+                          className={`relative flex px-6 justify-between border-b border-gray-300 py-2 ${
+                            hoveredPaymentId === payment.id
+                              ? "bg-[#2F4858]/20"
+                              : ""
+                          }`}
+                        >
+                          <span>${payment.amount}</span>
+                          <span>{new Date(payment.date).toLocaleString()}</span>
+                          {hoveredPaymentId === payment.id && (
+                            <button
+                              onClick={() => {
+                                setPaymentToDelete(payment);
+                                setShowConfirmDeletePaymentPopup(true);
+                              }}
+                              className="absolute right-1/2 top-1/2 transform -translate-y-1/2 translate-x-1/2 text-white font-semibold"
+                            >
+                              DELETE
+                            </button>
+                          )}
+                        </li>
+                      ))}
                   </ul>
                 )}
               </div>
