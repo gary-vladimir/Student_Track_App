@@ -27,6 +27,8 @@ const StudentDetails = () => {
   const [paymentToDelete, setPaymentToDelete] = useState(null);
   const [showConfirmDeletePaymentPopup, setShowConfirmDeletePaymentPopup] =
     useState(false);
+  const [paymentStatus, setPaymentStatus] = useState("");
+  const [pendingAmount, setPendingAmount] = useState(0);
 
   useEffect(() => {
     axios
@@ -46,6 +48,37 @@ const StudentDetails = () => {
           "There was an error fetching the student details!",
           error
         );
+      });
+  }, [id]);
+
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:5000/api/students/${id}`)
+      .then((response) => {
+        const studentData = response.data;
+        // Ensure default values
+        studentData.payments = studentData.payments || [];
+        studentData.groups = studentData.groups || [];
+        setStudent(studentData);
+        setName(studentData.name);
+        setParentPhoneNumber(studentData.parent_phone_number);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(
+          "There was an error fetching the student details!",
+          error
+        );
+      });
+
+    axios
+      .get(`http://127.0.0.1:5000/api/students/${id}/payment_status`)
+      .then((response) => {
+        setPaymentStatus(response.data.status);
+        setPendingAmount(response.data.pending_amount);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the payment status!", error);
       });
   }, [id]);
 
@@ -406,11 +439,11 @@ const StudentDetails = () => {
             <div>
               <p className="text-lg mb-4 flex justify-between">
                 <div>This Month Status:</div>
-                <div className="font-bold">PENDING</div>
+                <div className="font-bold">{paymentStatus}</div>
               </p>
               <p className="text-lg mb-4 flex justify-between">
                 <div>Pending Paying Amount:</div>
-                <div className="font-bold">$600</div>
+                <div className="font-bold">{pendingAmount}</div>
               </p>
               <div className="h-[2px] w-full bg-[#AECFE4]"></div>
               <p className="text-lg mb-4">
