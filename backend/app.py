@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from models import db, Group, Student, Payment, student_group_association
 from datetime import datetime
+from sqlalchemy import func
 
 app = Flask(__name__)
 CORS(app)
@@ -250,22 +251,30 @@ def get_payment_status(student_id):
     if student is None:
         return jsonify({"error": "Student not found"}), 404
 
-    current_month = datetime.utcnow().month
+    total_group_cost = sum(group.group_cost for group in student.groups)
+
     current_year = datetime.utcnow().year
+    current_month = datetime.utcnow().month
 
-    total_due = sum(group.group_cost for group in student.groups)
-
-    total_paid = sum(
-        payment.amount
-        for payment in student.payments
-        if payment.date.month == current_month and payment.date.year == current_year
+    total_payments = (
+        db.session.query(func.coalesce(func.sum(Payment.amount), 0))
+        .filter(
+            Payment.student_id == student_id,
+            func.extract("year", Payment.date) == current_year,
+            func.extract("month", Payment.date) == current_month,
+        )
+        .scalar()
     )
 
-    status = "PAID" if total_paid >= total_due else "PENDING"
-    pending_amount = max(0, total_due - total_paid)
-
-    if total_paid < total_due:
-        status = "BEHIND"
+    if total_payments == 0:
+        status = "PENDING"
+        pending_amount = total_group_cost
+    elif total_payments < total_group_cost:
+        status = "PENDING"
+        pending_amount = total_group_cost - total_payments
+    elif total_payments >= total_group_cost:
+        status = "PAID"
+        pending_amount = 0
 
     return jsonify({"status": status, "pending_amount": pending_amount}), 200
 
