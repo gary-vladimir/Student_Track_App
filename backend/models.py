@@ -57,6 +57,7 @@ class Payment(db.Model):
     amount = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     student_id = db.Column(db.Integer, db.ForeignKey("students.id"), nullable=False)
+    group_cost_at_payment = db.Column(db.Integer, nullable=False)
 
     def to_dict(self):
         return {
@@ -64,4 +65,5 @@ class Payment(db.Model):
             "amount": self.amount,
             "date": self.date.isoformat(),
             "student_id": self.student_id,
+            "group_cost_at_payment": self.group_cost_at_payment,
         }
