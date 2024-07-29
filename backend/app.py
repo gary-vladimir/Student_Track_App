@@ -240,5 +240,36 @@ def get_student(student_id):
     return jsonify(student.to_dict()), 200
 
 
+@app.route("/api/students/<int:student_id>/payment_status", methods=["GET"])
+def get_payment_status(student_id):
+    student = Student.query.get(student_id)
+    if student is None:
+        return jsonify({"error": "Student not found"}), 404
+
+    current_month = datetime.utcnow().month
+    total_cost = sum(group.group_cost for group in student.groups)
+    total_paid = sum(
+        payment.amount
+        for payment in student.payments
+        if payment.date.month == current_month
+    )
+
+    previous_month_total = sum(
+        payment.amount
+        for payment in student.payments
+        if payment.date.month == current_month - 1
+    )
+    previous_month_cost = total_cost
+
+    status = "PAID" if total_paid >= total_cost else "PENDING"
+    pending_amount = max(0, total_cost - total_paid)
+
+    if previous_month_total < previous_month_cost:
+        status = "BEHIND"
+        pending_amount += previous_month_cost - previous_month_total
+
+    return jsonify({"status": status, "pending_amount": pending_amount}), 200
+
+
 if __name__ == "__main__":
     app.run(debug=True)
