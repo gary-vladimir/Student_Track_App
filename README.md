@@ -13,7 +13,7 @@ The **Student Track App** is a comprehensive platform designed to help administr
 
 ## Screenshots
 
-[Add screenshots here]
+["Student Track App UI"](/StudentTrackApp.png)
 
 ## Installation
 
