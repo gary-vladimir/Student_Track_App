@@ -30,33 +30,11 @@ const StudentDetails = () => {
   const [paymentStatus, setPaymentStatus] = useState("");
   const [pendingAmount, setPendingAmount] = useState(0);
 
-  useEffect(() => {
+  const fetchStudentData = () => {
     axios
       .get(`http://127.0.0.1:5000/api/students/${id}`)
       .then((response) => {
         const studentData = response.data;
-        // Ensure default values
-        studentData.payments = studentData.payments || [];
-        studentData.groups = studentData.groups || [];
-        setStudent(studentData);
-        setName(studentData.name);
-        setParentPhoneNumber(studentData.parent_phone_number);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(
-          "There was an error fetching the student details!",
-          error
-        );
-      });
-  }, [id]);
-
-  useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:5000/api/students/${id}`)
-      .then((response) => {
-        const studentData = response.data;
-        // Ensure default values
         studentData.payments = studentData.payments || [];
         studentData.groups = studentData.groups || [];
         setStudent(studentData);
@@ -80,12 +58,16 @@ const StudentDetails = () => {
       .catch((error) => {
         console.error("There was an error fetching the payment status!", error);
       });
+  };
+
+  useEffect(() => {
+    fetchStudentData();
   }, [id]);
 
   const handleDelete = () => {
     axios
       .delete(`http://127.0.0.1:5000/api/students/${id}`)
-      .then((response) => {
+      .then(() => {
         navigate("/students");
       })
       .catch((error) => {
@@ -99,13 +81,8 @@ const StudentDetails = () => {
         `http://127.0.0.1:5000/api/students/${id}/payments/${paymentToDelete.id}`
       )
       .then(() => {
-        setStudent({
-          ...student,
-          payments: student.payments.filter(
-            (payment) => payment.id !== paymentToDelete.id
-          ),
-        });
         setShowConfirmDeletePaymentPopup(false);
+        fetchStudentData();
       })
       .catch((error) => {
         console.error("There was an error deleting the payment!", error);
@@ -118,14 +95,9 @@ const StudentDetails = () => {
         `http://127.0.0.1:5000/api/groups/${groupToDelete.id}/students/${student.id}`
       )
       .then(() => {
-        setStudent({
-          ...student,
-          groups: student.groups.filter(
-            (group) => group.id !== groupToDelete.id
-          ),
-        });
         setShowConfirmDeletePopup(false);
         setIsDeleteMode(false);
+        fetchStudentData();
       })
       .catch((error) => {
         console.error(
@@ -145,12 +117,9 @@ const StudentDetails = () => {
 
     axios
       .patch(`http://127.0.0.1:5000/api/students/${id}`, updatedStudent)
-      .then((response) => {
-        const updatedData = response.data;
-        updatedData.payments = updatedData.payments || [];
-        updatedData.groups = updatedData.groups || [];
-        setStudent(updatedData);
+      .then(() => {
         setIsEditing(false);
+        fetchStudentData();
       })
       .catch((error) => {
         console.error("There was an error updating the student!", error);
@@ -180,13 +149,7 @@ const StudentDetails = () => {
         student_id: student.id,
       })
       .then(() => {
-        return axios.get(`http://127.0.0.1:5000/api/students/${id}`);
-      })
-      .then((response) => {
-        const updatedStudent = response.data;
-        updatedStudent.payments = updatedStudent.payments || [];
-        updatedStudent.groups = updatedStudent.groups || [];
-        setStudent(updatedStudent);
+        fetchStudentData();
         setShowAddGroupPopup(false);
       })
       .catch((error) => {
@@ -202,13 +165,10 @@ const StudentDetails = () => {
       .post(`http://127.0.0.1:5000/api/students/${id}/payments`, {
         amount: newPaymentAmount,
       })
-      .then((response) => {
-        setStudent((prevStudent) => ({
-          ...prevStudent,
-          payments: [...prevStudent.payments, response.data],
-        }));
+      .then(() => {
         setShowAddPaymentPopup(false);
         setNewPaymentAmount("");
+        fetchStudentData();
       })
       .catch((error) => {
         console.error("There was an error adding the payment!", error);
