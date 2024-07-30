@@ -13,6 +13,9 @@ const GroupDetails = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [groupCost, setGroupCost] = useState("");
   const [editedStudents, setEditedStudents] = useState([]);
+  const [studentPaymentStatus, setStudentPaymentStatus] = useState({});
+  const [studentPendingAmount, setStudentPendingAmount] = useState({});
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,6 +48,48 @@ const GroupDetails = () => {
         console.error("There was an error deleting the group!", error);
       });
   };
+
+  useEffect(() => {
+    const fetchGroupData = async () => {
+      try {
+        const groupResponse = await axios.get(
+          `http://127.0.0.1:5000/api/groups/${id}`
+        );
+        setGroup(groupResponse.data);
+        setGroupCost(groupResponse.data.group_cost);
+        setEditedStudents(groupResponse.data.students);
+        setLoading(false);
+
+        const paymentStatusPromises = groupResponse.data.students.map(
+          (student) =>
+            axios.get(
+              `http://127.0.0.1:5000/api/students/${student.id}/payment_status`
+            )
+        );
+
+        const paymentStatusResponses = await Promise.all(paymentStatusPromises);
+        const newStudentPaymentStatus = {};
+        const newStudentPendingAmount = {};
+
+        paymentStatusResponses.forEach((response, index) => {
+          newStudentPaymentStatus[groupResponse.data.students[index].id] =
+            response.data.status;
+          newStudentPendingAmount[groupResponse.data.students[index].id] =
+            response.data.pending_amount;
+        });
+
+        setStudentPaymentStatus(newStudentPaymentStatus);
+        setStudentPendingAmount(newStudentPendingAmount);
+      } catch (error) {
+        console.error(
+          "There was an error fetching the group details and payment status!",
+          error
+        );
+      }
+    };
+
+    fetchGroupData();
+  }, [id]);
 
   const handleSave = () => {
     axios
@@ -211,10 +256,10 @@ const GroupDetails = () => {
                   {student.name}
                 </td>
                 <td className="py-2 px-4 border-b  border-[#69A1CB]">
-                  PENDING
+                  {studentPaymentStatus[student.id] || "Loading..."}
                 </td>
                 <td className="py-2 flex justify-between px-4 border-b  border-[#69A1CB] text-center">
-                  $0
+                  ${studentPendingAmount[student.id] || 0}
                   {isEditing ? (
                     <button
                       onClick={() => handleRemoveStudent(student.id)}
