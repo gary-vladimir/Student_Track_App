@@ -1,70 +1,104 @@
-# Getting Started with Create React App
+---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Student Track App
 
-## Available Scripts
+The **Student Track App** is a comprehensive platform designed to help administrators manage students and groups, track payments, and maintain student records efficiently. This open-source project provides an intuitive interface and easy-to-use functionalities for managing educational institutions' administrative tasks.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Student Management**: Add, edit, and delete student records.
+- **Group Management**: Create groups, assign students to groups, and manage group details.
+- **Payment Tracking**: Record payments made by students, view payment history, and track pending amounts.
+- **Payment Status**: Automatic calculation of the student's payment status (PAID, PENDING, BEHIND).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Screenshots
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+[Add screenshots here]
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- **Backend**: Python 3.9+, Flask, PostgreSQL
+- **Frontend**: Node.js, npm, React
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clone the repository**:
+   ```
+   git clone https://github.com/gary-vladimir/Student_Track_App.git
+   cd Student_Track_app
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Backend Setup**:
+   - Navigate to the backend directory:
+     ```
+     cd backend
+     ```
+   - Create a virtual environment and install dependencies:
+     ```
+     python -m venv venv
+     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+     pip install -r requirements.txt
+     ```
 
-### `npm run eject`
+   - Run the backend server:
+     ```
+     python app.py
+     ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Frontend Setup**:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   - Install the dependencies:
+     ```
+     npm install
+     ```
+   - Start the frontend development server:
+     ```
+     npm start
+     ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Usage
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Navigate to `http://localhost:3000` to use the application.
+- The main dashboard provides options to manage students and groups.
+- Click on a student or group to view and edit details.
 
-## Learn More
+## API Documentation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The backend API provides endpoints for managing students, groups, and payments. Here's a brief overview:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- `GET /api/groups`: Fetch all groups.
+- `GET /api/groups/<group_id>`: Fetch details of a specific group.
+- `POST /api/groups`: Create a new group.
+- `PATCH /api/groups/<group_id>`: Update group details.
+- `DELETE /api/groups/<group_id>`: Delete a group.
 
-### Code Splitting
+- `GET /api/students`: Fetch all students.
+- `GET /api/students/<student_id>`: Fetch details of a specific student.
+- `POST /api/students`: Create a new student.
+- `PATCH /api/students/<student_id>`: Update student details.
+- `DELETE /api/students/<student_id>`: Delete a student.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- `POST /api/students/<student_id>/payments`: Add a payment for a student.
+- `DELETE /api/students/<student_id>/payments/<payment_id>`: Delete a specific payment.
 
-### Analyzing the Bundle Size
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Contributions are welcome!
 
-### Making a Progressive Web App
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This project is licensed under the MIT License.
 
-### Advanced Configuration
+## Acknowledgements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- [React](https://reactjs.org/)
+- [Flask](https://flask.palletsprojects.com/)
+- [PostgreSQL](https://www.postgresql.org/)
 
-### Deployment
+## Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+For any questions or suggestions, please contact us at [gary@garybricks.com].
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
