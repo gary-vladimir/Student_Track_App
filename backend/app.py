@@ -5,15 +5,11 @@ from flask_migrate import Migrate
 from models import db, Group, Student, Payment, student_group_association
 from datetime import datetime
 from sqlalchemy import func
-from jose import jwt
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
-API_AUDIENCE = os.getenv("API_AUDIENCE")
-ALGORITHMS = os.getenv("ALGORITHMS")
 CLIENT_ORIGIN_URL = os.getenv("CLIENT_ORIGIN_URL")
 
 app = Flask(__name__)
