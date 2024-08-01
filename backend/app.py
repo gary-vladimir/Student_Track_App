@@ -7,6 +7,7 @@ from datetime import datetime
 from sqlalchemy import func
 from dotenv import load_dotenv
 import os
+from auth import requires_auth, AuthError
 
 load_dotenv()
 
@@ -26,13 +27,15 @@ migrate = Migrate(app, db)
 
 
 @app.route("/api/groups", methods=["GET"])
-def get_groups():
+@requires_auth("get:groups")
+def get_groups(payload):
     groups = Group.query.order_by(Group.id).all()
     return jsonify([group.to_dict() for group in groups])
 
 
 @app.route("/api/groups/<int:group_id>", methods=["GET"])
-def get_group(group_id):
+@requires_auth("get:group")
+def get_group(payload, group_id):
     group = Group.query.get(group_id)
     if group is None:
         return jsonify({"error": "Group not found"}), 404
@@ -40,7 +43,8 @@ def get_group(group_id):
 
 
 @app.route("/api/groups/<int:group_id>", methods=["DELETE"])
-def delete_group(group_id):
+@requires_auth("delete:group")
+def delete_group(payload, group_id):
     group = Group.query.get(group_id)
     if group is None:
         return jsonify({"error": "Group not found"}), 404
@@ -53,7 +57,8 @@ def delete_group(group_id):
 
 
 @app.route("/api/groups/<int:group_id>/students", methods=["GET"])
-def get_students_by_group(group_id):
+@requires_auth("get:students_by_group")
+def get_students_by_group(payload, group_id):
     students = (
         Student.query.join(student_group_association)
         .filter(student_group_association.c.group_id == group_id)
@@ -63,7 +68,8 @@ def get_students_by_group(group_id):
 
 
 @app.route("/api/groups", methods=["POST"])
-def create_group():
+@requires_auth("create:group")
+def create_group(payload):
     data = request.get_json()
     if "title" not in data or not data["title"]:
         return jsonify({"error": "Title is required and cannot be blank"}), 400
@@ -77,7 +83,8 @@ def create_group():
 
 
 @app.route("/api/groups/<int:group_id>", methods=["PATCH"])
-def update_group(group_id):
+@requires_auth("patch:group")
+def update_group(payload, group_id):
     data = request.get_json()
     group = Group.query.get(group_id)
     if group is None:
@@ -96,7 +103,8 @@ def update_group(group_id):
 
 
 @app.route("/api/students", methods=["POST"])
-def create_student():
+@requires_auth("create:student")
+def create_student(payload):
     data = request.get_json()
     new_student = Student(
         name=data["name"],
@@ -117,7 +125,8 @@ def create_student():
 
 
 @app.route("/api/students/<int:student_id>", methods=["DELETE"])
-def delete_student(student_id):
+@requires_auth("delete:student")
+def delete_student(payload, student_id):
     student = Student.query.get(student_id)
     if student is None:
         return jsonify({"error": "Student not found"}), 404
@@ -127,7 +136,8 @@ def delete_student(student_id):
 
 
 @app.route("/api/students/<int:student_id>", methods=["PATCH"])
-def update_student(student_id):
+@requires_auth("patch:student")
+def update_student(payload, student_id):
     data = request.get_json()
     student = Student.query.get(student_id)
     if student is None:
@@ -161,7 +171,8 @@ def update_student(student_id):
 
 
 @app.route("/api/groups/<int:group_id>/students", methods=["POST"])
-def add_student_to_group(group_id):
+@requires_auth("add:student_to_group")
+def add_student_to_group(payload, group_id):
     data = request.get_json()
     student_id = data.get("student_id")
 
@@ -178,7 +189,8 @@ def add_student_to_group(group_id):
 
 
 @app.route("/api/groups/<int:group_id>/students/<int:student_id>", methods=["DELETE"])
-def remove_student_from_group(group_id, student_id):
+@requires_auth("remove:student_from_group")
+def remove_student_from_group(payload, group_id, student_id):
     group = Group.query.get(group_id)
     student = Student.query.get(student_id)
 
@@ -197,7 +209,8 @@ def remove_student_from_group(group_id, student_id):
 
 
 @app.route("/api/students/<int:student_id>/payments", methods=["POST"])
-def add_payment(student_id):
+@requires_auth("create:payment")
+def add_payment(payload, student_id):
     data = request.get_json()
     amount = data.get("amount")
     if amount is None:
@@ -220,7 +233,8 @@ def add_payment(student_id):
 @app.route(
     "/api/students/<int:student_id>/payments/<int:payment_id>", methods=["DELETE"]
 )
-def delete_payment(student_id, payment_id):
+@requires_auth("delete:payment")
+def delete_payment(payload, student_id, payment_id):
     student = Student.query.get(student_id)
     if student is None:
         return jsonify({"error": "Student not found"}), 404
@@ -236,14 +250,16 @@ def delete_payment(student_id, payment_id):
 
 
 @app.route("/api/students", methods=["GET"])
-def get_students():
+@requires_auth("get:students")
+def get_students(payload):
     students = Student.query.all()
     return jsonify([student.to_dict() for student in students])
 
 
 # Endpoint to get student details including payments
 @app.route("/api/students/<int:student_id>", methods=["GET"])
-def get_student(student_id):
+@requires_auth("get:student")
+def get_student(payload, student_id):
     student = Student.query.get(student_id)
     if student is None:
         return jsonify({"error": "Student not found"}), 404
@@ -252,7 +268,8 @@ def get_student(student_id):
 
 
 @app.route("/api/students/<int:student_id>/payment_status", methods=["GET"])
-def get_payment_status(student_id):
+@requires_auth("get:payment_status")
+def get_payment_status(payload, student_id):
     student = Student.query.get(student_id)
     if student is None:
         return jsonify({"error": "Student not found"}), 404
@@ -304,6 +321,13 @@ def internal_error(error):
 @app.errorhandler(405)
 def method_not_allowed_error(error):
     return jsonify({"error": "Method Not Allowed", "message": str(error)}), 405
+
+
+@app.errorhandler(AuthError)
+def handle_auth_error(ex):
+    response = jsonify(ex.error)
+    response.status_code = ex.status_code
+    return response
 
 
 if __name__ == "__main__":
