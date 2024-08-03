@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import BackBtn from "../assets/BackButton.svg";
 import decoration from "../assets/decoration.svg";
 import decoration2 from "../assets/decorationPlants.svg";
@@ -13,38 +14,59 @@ const Students = () => {
   const [parentPhoneNumber, setParentPhoneNumber] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:5000/api/students")
-      .then((response) => {
+    const fetchStudents = async () => {
+      try {
+        const token = await getAccessTokenSilently({
+          audience: "https://studenttrackapi.com",
+        });
+        const response = await axios.get("http://127.0.0.1:5000/api/students", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setStudents(response.data);
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("There was an error fetching the students!", error);
-      });
-  }, []);
+        setLoading(false);
+      }
+    };
 
-  const handleAddStudent = (e) => {
+    fetchStudents();
+  }, [getAccessTokenSilently]);
+
+  const handleAddStudent = async (e) => {
     e.preventDefault();
     const newStudent = { name, parent_phone_number: parentPhoneNumber };
 
-    axios
-      .post("http://127.0.0.1:5000/api/students", newStudent)
-      .then((response) => {
-        setStudents([...students, response.data]);
-        setName("");
-        setParentPhoneNumber("");
-      })
-      .catch((error) => {
-        console.error("There was an error adding the student!", error);
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
+      const response = await axios.post(
+        "http://127.0.0.1:5000/api/students",
+        newStudent,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setStudents([...students, response.data]);
+      setName("");
+      setParentPhoneNumber("");
+    } catch (error) {
+      console.error("There was an error adding the student!", error);
+    }
   };
 
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
   }
+
   const handleStudentClick = (id) => {
     navigate(`/student/${id}`);
   };
@@ -62,15 +84,14 @@ const Students = () => {
         className="absolute top-0 right-0 z-0"
       />
       <h1 className="text-5xl flex font-bold mb-6 text-[#2F4858]">
-        {" "}
         <button onClick={() => navigate("/")}>
           <img
             src={BackBtn}
             alt="Add Group Icon"
             className="h-[40px] hover:scale-110 transition mt-1 mr-4"
           />
-        </button>{" "}
-        <div>Students 🧑‍🏫 </div>{" "}
+        </button>
+        <div>Students 🧑‍🏫</div>
       </h1>
       <div className="flex gap-6">
         <div className="w-1/2 h-[45vh] py-1 overflow-auto pr-2">
