@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 import BackBtn from "../assets/BackButton.svg";
 import xIcon from "../assets/close-circle-svgrepo-com 1.svg";
 import PhoneInput from "react-phone-input-2";
@@ -30,149 +31,189 @@ const StudentDetails = () => {
   const [paymentStatus, setPaymentStatus] = useState("");
   const [pendingAmount, setPendingAmount] = useState(0);
 
-  const fetchStudentData = () => {
-    axios
-      .get(`http://127.0.0.1:5000/api/students/${id}`)
-      .then((response) => {
-        const studentData = response.data;
-        studentData.payments = studentData.payments || [];
-        studentData.groups = studentData.groups || [];
-        setStudent(studentData);
-        setName(studentData.name);
-        setParentPhoneNumber(studentData.parent_phone_number);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(
-          "There was an error fetching the student details!",
-          error
-        );
+  const { getAccessTokenSilently } = useAuth0();
+
+  const fetchStudentData = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
 
-    axios
-      .get(`http://127.0.0.1:5000/api/students/${id}/payment_status`)
-      .then((response) => {
-        setPaymentStatus(response.data.status);
-        setPendingAmount(response.data.pending_amount);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the payment status!", error);
-      });
+      const response = await axios.get(
+        `http://127.0.0.1:5000/api/students/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const studentData = response.data;
+      studentData.payments = studentData.payments || [];
+      studentData.groups = studentData.groups || [];
+      setStudent(studentData);
+      setName(studentData.name);
+      setParentPhoneNumber(studentData.parent_phone_number);
+      setLoading(false);
+
+      const paymentStatusResponse = await axios.get(
+        `http://127.0.0.1:5000/api/students/${id}/payment_status`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setPaymentStatus(paymentStatusResponse.data.status);
+      setPendingAmount(paymentStatusResponse.data.pending_amount);
+    } catch (error) {
+      console.error("There was an error fetching the student details!", error);
+    }
   };
 
   useEffect(() => {
     fetchStudentData();
-  }, [id]);
+  }, [id, getAccessTokenSilently]);
 
-  const handleDelete = () => {
-    axios
-      .delete(`http://127.0.0.1:5000/api/students/${id}`)
-      .then(() => {
-        navigate("/students");
-      })
-      .catch((error) => {
-        console.error("There was an error deleting the student!", error);
+  const handleDelete = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
+      await axios.delete(`http://127.0.0.1:5000/api/students/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      navigate("/students");
+    } catch (error) {
+      console.error("There was an error deleting the student!", error);
+    }
   };
 
-  const handleDeletePayment = () => {
-    axios
-      .delete(
-        `http://127.0.0.1:5000/api/students/${id}/payments/${paymentToDelete.id}`
-      )
-      .then(() => {
-        setShowConfirmDeletePaymentPopup(false);
-        fetchStudentData();
-      })
-      .catch((error) => {
-        console.error("There was an error deleting the payment!", error);
+  const handleDeletePayment = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
+      await axios.delete(
+        `http://127.0.0.1:5000/api/students/${id}/payments/${paymentToDelete.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setShowConfirmDeletePaymentPopup(false);
+      fetchStudentData();
+    } catch (error) {
+      console.error("There was an error deleting the payment!", error);
+    }
   };
 
-  const handleConfirmDelete = () => {
-    axios
-      .delete(
-        `http://127.0.0.1:5000/api/groups/${groupToDelete.id}/students/${student.id}`
-      )
-      .then(() => {
-        setShowConfirmDeletePopup(false);
-        setIsDeleteMode(false);
-        fetchStudentData();
-      })
-      .catch((error) => {
-        console.error(
-          "There was an error removing the student from the group!",
-          error
-        );
+  const handleConfirmDelete = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
+      await axios.delete(
+        `http://127.0.0.1:5000/api/groups/${groupToDelete.id}/students/${student.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setShowConfirmDeletePopup(false);
+      setIsDeleteMode(false);
+      fetchStudentData();
+    } catch (error) {
+      console.error(
+        "There was an error removing the student from the group!",
+        error
+      );
+    }
   };
 
-  const handleSave = () => {
-    const updatedStudent = {
-      name,
-      parent_phone_number: parentPhoneNumber,
-      payments: student.payments || [],
-      groups: student.groups || [],
-    };
-
-    axios
-      .patch(`http://127.0.0.1:5000/api/students/${id}`, updatedStudent)
-      .then(() => {
-        setIsEditing(false);
-        fetchStudentData();
-      })
-      .catch((error) => {
-        console.error("There was an error updating the student!", error);
+  const handleSave = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
+      const updatedStudent = {
+        name,
+        parent_phone_number: parentPhoneNumber,
+        payments: student.payments || [],
+        groups: student.groups || [],
+      };
+      await axios.patch(
+        `http://127.0.0.1:5000/api/students/${id}`,
+        updatedStudent,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setIsEditing(false);
+      fetchStudentData();
+    } catch (error) {
+      console.error("There was an error updating the student!", error);
+    }
   };
 
-  const handleAddGroup = () => {
-    axios
-      .get("http://127.0.0.1:5000/api/groups")
-      .then((response) => {
-        const allGroups = response.data;
-        const studentGroupIds = student.groups.map((g) => g.id);
-        const filteredGroups = allGroups.filter(
-          (group) => !studentGroupIds.includes(group.id)
-        );
-        setAvailableGroups(filteredGroups);
-        setShowAddGroupPopup(true);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the groups!", error);
+  const handleAddGroup = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
+      const response = await axios.get("http://127.0.0.1:5000/api/groups", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const allGroups = response.data;
+      const studentGroupIds = student.groups.map((g) => g.id);
+      const filteredGroups = allGroups.filter(
+        (group) => !studentGroupIds.includes(group.id)
+      );
+      setAvailableGroups(filteredGroups);
+      setShowAddGroupPopup(true);
+    } catch (error) {
+      console.error("There was an error fetching the groups!", error);
+    }
   };
 
-  const handleSelectGroup = (groupId) => {
-    axios
-      .post(`http://127.0.0.1:5000/api/groups/${groupId}/students`, {
-        student_id: student.id,
-      })
-      .then(() => {
-        fetchStudentData();
-        setShowAddGroupPopup(false);
-      })
-      .catch((error) => {
-        console.error(
-          "There was an error updating the student information!",
-          error
-        );
+  const handleSelectGroup = async (groupId) => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
+      await axios.post(
+        `http://127.0.0.1:5000/api/groups/${groupId}/students`,
+        {
+          student_id: student.id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      fetchStudentData();
+      setShowAddGroupPopup(false);
+    } catch (error) {
+      console.error(
+        "There was an error updating the student information!",
+        error
+      );
+    }
   };
 
-  const handleConfirmPayment = () => {
-    axios
-      .post(`http://127.0.0.1:5000/api/students/${id}/payments`, {
-        amount: newPaymentAmount,
-      })
-      .then(() => {
-        setShowAddPaymentPopup(false);
-        setNewPaymentAmount("");
-        fetchStudentData();
-      })
-      .catch((error) => {
-        console.error("There was an error adding the payment!", error);
+  const handleConfirmPayment = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
+      await axios.post(
+        `http://127.0.0.1:5000/api/students/${id}/payments`,
+        {
+          amount: newPaymentAmount,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setShowAddPaymentPopup(false);
+      setNewPaymentAmount("");
+      fetchStudentData();
+    } catch (error) {
+      console.error("There was an error adding the payment!", error);
+    }
   };
 
   const handleAddPayment = () => setShowAddPaymentPopup(true);
@@ -192,6 +233,7 @@ const StudentDetails = () => {
   if (!student) {
     return <div className="text-center text-xl">Student not found</div>;
   }
+
   const formattedPhoneNumber = parsePhoneNumberFromString(
     parentPhoneNumber.startsWith("+")
       ? parentPhoneNumber
