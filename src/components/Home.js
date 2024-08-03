@@ -1,29 +1,41 @@
-// src/components/Home.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import decoration from "../assets/search_app_decoration.svg";
 import addIcon from "../assets/BigAddButton.svg";
 import studentBtn from "../assets/students_Button.svg";
-
 import "../scrollbar.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Home = () => {
+  const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:5000/api/groups")
-      .then((response) => {
-        setGroups(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the groups!", error);
-      });
-  }, []);
+    const fetchGroups = async () => {
+      if (isAuthenticated && !isLoading) {
+        try {
+          const token = await getAccessTokenSilently({
+            audience: "https://studenttrackapi.com",
+          });
+          const response = await axios.get("http://127.0.0.1:5000/api/groups", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setGroups(response.data);
+          setLoading(false);
+        } catch (error) {
+          console.error("There was an error fetching the groups!", error);
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchGroups();
+  }, [getAccessTokenSilently, isAuthenticated, isLoading]);
 
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;

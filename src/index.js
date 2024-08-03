@@ -3,18 +3,22 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router } from "react-router-dom";
-import Auth0ProviderWithHistory from "./Auth0ProviderWithHistory";
+import { Auth0Provider } from "@auth0/auth0-react";
+import config from "./auth_config.json";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
 root.render(
   <React.StrictMode>
-    <Router>
-      <Auth0ProviderWithHistory>
-        <App />
-      </Auth0ProviderWithHistory>
-    </Router>
+    <Auth0Provider
+      domain={config.domain}
+      clientId={config.clientId}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        audience: config.audience,
+      }}
+    >
+      <App />
+    </Auth0Provider>
   </React.StrictMode>
 );
 
