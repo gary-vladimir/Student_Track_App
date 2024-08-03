@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 import BackBtn from "../assets/BackButton.svg";
 import addUserBtn from "../assets/addUser.svg";
 import removeUserBtn from "../assets/removeUser.svg";
@@ -17,43 +18,22 @@ const GroupDetails = () => {
   const [studentPendingAmount, setStudentPendingAmount] = useState({});
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:5000/api/groups/${id}`)
-      .then((response) => {
-        setGroup(response.data);
-        setGroupCost(response.data.group_cost);
-        setEditedStudents(response.data.students);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the group details!", error);
-      });
-  }, [id]);
-
-  const handleDelete = () => {
-    if (group.students.length > 0) {
-      setShowPopup(true);
-      return;
-    }
-
-    axios
-      .delete(`http://127.0.0.1:5000/api/groups/${id}`)
-      .then((response) => {
-        console.log(response.data);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("There was an error deleting the group!", error);
-      });
-  };
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const fetchGroupData = async () => {
       try {
+        const token = await getAccessTokenSilently({
+          audience: "https://studenttrackapi.com",
+        });
+
         const groupResponse = await axios.get(
-          `http://127.0.0.1:5000/api/groups/${id}`
+          `http://127.0.0.1:5000/api/groups/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setGroup(groupResponse.data);
         setGroupCost(groupResponse.data.group_cost);
@@ -63,7 +43,12 @@ const GroupDetails = () => {
         const paymentStatusPromises = groupResponse.data.students.map(
           (student) =>
             axios.get(
-              `http://127.0.0.1:5000/api/students/${student.id}/payment_status`
+              `http://127.0.0.1:5000/api/students/${student.id}/payment_status`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             )
         );
 
@@ -85,48 +70,83 @@ const GroupDetails = () => {
           "There was an error fetching the group details and payment status!",
           error
         );
+        setLoading(false);
       }
     };
 
     fetchGroupData();
-  }, [id]);
+  }, [id, getAccessTokenSilently]);
 
-  const handleSave = () => {
-    axios
-      .patch(`http://127.0.0.1:5000/api/groups/${id}`, {
-        group_cost: parseInt(groupCost),
-      })
-      .then((response) => {
-        setGroup(response.data);
-        setIsEditing(false);
-      })
-      .catch((error) => {
-        console.error("There was an error updating the group cost!", error);
+  const handleDelete = async () => {
+    if (group.students.length > 0) {
+      setShowPopup(true);
+      return;
+    }
+
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
       });
 
-    // Remove students from group
-    const removedStudents = group.students.filter(
-      (student) =>
-        !editedStudents.some((editedStudent) => editedStudent.id === student.id)
-    );
-    removedStudents.forEach((student) => {
-      axios
-        .delete(`http://127.0.0.1:5000/api/groups/${id}/students/${student.id}`)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error(
-            "There was an error removing the student from the group!",
-            error
-          );
-        });
-    });
+      await axios.delete(`http://127.0.0.1:5000/api/groups/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate("/");
+    } catch (error) {
+      console.error("There was an error deleting the group!", error);
+    }
+  };
 
-    setGroup((prevGroup) => ({
-      ...prevGroup,
-      students: editedStudents,
-    }));
+  const handleSave = async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: "https://studenttrackapi.com",
+      });
+
+      const response = await axios.patch(
+        `http://127.0.0.1:5000/api/groups/${id}`,
+        {
+          group_cost: parseInt(groupCost),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setGroup(response.data);
+      setIsEditing(false);
+
+      // Remove students from group
+      const removedStudents = group.students.filter(
+        (student) =>
+          !editedStudents.some(
+            (editedStudent) => editedStudent.id === student.id
+          )
+      );
+
+      await Promise.all(
+        removedStudents.map((student) =>
+          axios.delete(
+            `http://127.0.0.1:5000/api/groups/${id}/students/${student.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+        )
+      );
+
+      setGroup((prevGroup) => ({
+        ...prevGroup,
+        students: editedStudents,
+      }));
+    } catch (error) {
+      console.error("There was an error updating the group!", error);
+    }
   };
 
   const handleCancel = () => {
