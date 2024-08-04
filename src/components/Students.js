@@ -7,6 +7,7 @@ import decoration from "../assets/decoration.svg";
 import decoration2 from "../assets/decorationPlants.svg";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
+import { usePermissions } from "./usePermissions";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -15,6 +16,7 @@ const Students = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
+  const { hasPermission } = usePermissions();
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -108,45 +110,47 @@ const Students = () => {
           </ul>
         </div>
         <div className="w-1/2 ">
-          <div className="border-2 relative z-10 border-[#69A1CB] backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
-            <h2 className="text-2xl bg-gradient-to-r from-[#69A1CB] to-[#55DDE0] font-semibold text-white p-3 pl-6 mb-4">
-              Add New Student
-            </h2>
-            <form className="px-6 pb-6" onSubmit={handleAddStudent}>
-              <div className="mb-4">
-                <label className="block text-gray-700">Full Name:</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
-                  placeholder="Enter full name here"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">
-                  Tutor Phone Number:
-                </label>
-                <PhoneInput
-                  country={"us"}
-                  value={parentPhoneNumber}
-                  onChange={(phone) => setParentPhoneNumber(phone)}
-                  inputClass="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
-                  placeholder="ex: +52 953 340 4382"
-                  inputStyle={{ width: "100%" }}
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-[#55DDE0] text-[#2F4858] font-bold py-2 px-4 rounded hover:scale-110 transition"
-              >
-                CREATE
-              </button>
-            </form>
-          </div>
+          {hasPermission("create:student") && (
+            <div className="border-2 relative z-10 border-[#69A1CB] backdrop-blur-lg bg-white/50 rounded-lg shadow-sm">
+              <h2 className="text-2xl bg-gradient-to-r from-[#69A1CB] to-[#55DDE0] font-semibold text-white p-3 pl-6 mb-4">
+                Add New Student
+              </h2>
+              <form className="px-6 pb-6" onSubmit={handleAddStudent}>
+                <div className="mb-4">
+                  <label className="block text-gray-700">Full Name:</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
+                    placeholder="Enter full name here"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700">
+                    Tutor Phone Number:
+                  </label>
+                  <PhoneInput
+                    country={"us"}
+                    value={parentPhoneNumber}
+                    onChange={(phone) => setParentPhoneNumber(phone)}
+                    inputClass="border-b-2 border-[#69A1CB] rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-[#F26419]"
+                    placeholder="ex: +52 953 340 4382"
+                    inputStyle={{ width: "100%" }}
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-[#55DDE0] text-[#2F4858] font-bold py-2 px-4 rounded hover:scale-110 transition"
+                >
+                  CREATE
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </div>
