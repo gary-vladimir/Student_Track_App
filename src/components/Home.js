@@ -11,31 +11,41 @@ const Home = () => {
   const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userPermissions, setUserPermissions] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchGroups = async () => {
+    const fetchGroupsAndUserPermissions = async () => {
       if (isAuthenticated && !isLoading) {
         try {
           const token = await getAccessTokenSilently({
             audience: "https://studenttrackapi.com",
           });
+
+          // Fetch groups
           const response = await axios.get("http://127.0.0.1:5000/api/groups", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
           setGroups(response.data);
+
+          // Get user permissions from the token
+          const decodedToken = JSON.parse(atob(token.split(".")[1]));
+          setUserPermissions(decodedToken.permissions || []);
+
           setLoading(false);
         } catch (error) {
-          console.error("There was an error fetching the groups!", error);
+          console.error("There was an error fetching the data!", error);
           setLoading(false);
         }
       }
     };
 
-    fetchGroups();
+    fetchGroupsAndUserPermissions();
   }, [getAccessTokenSilently, isAuthenticated, isLoading]);
+
+  const canCreateGroup = userPermissions.includes("create:group");
 
   if (loading) {
     return <div className="text-center text-xl">Loading...</div>;
@@ -46,16 +56,18 @@ const Home = () => {
       <div className="flex justify-between relative z-10">
         <div className="flex">
           <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Groups</h1>
-          <button
-            className="hover:scale-110 transition"
-            onClick={() => navigate("/create-group")}
-          >
-            <img
-              src={addIcon}
-              alt="Add Group Icon"
-              className="h-[40px] mb-3 ml-3"
-            />
-          </button>
+          {canCreateGroup && (
+            <button
+              className="hover:scale-110 transition"
+              onClick={() => navigate("/create-group")}
+            >
+              <img
+                src={addIcon}
+                alt="Add Group Icon"
+                className="h-[40px] mb-3 ml-3"
+              />
+            </button>
+          )}
         </div>
         <div className="flex">
           <h1 className="text-5xl font-bold mb-6 text-[#2F4858]">Students</h1>
