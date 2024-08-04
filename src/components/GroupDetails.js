@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import { usePermissions } from "./usePermissions";
 import BackBtn from "../assets/BackButton.svg";
 import addUserBtn from "../assets/addUser.svg";
 import removeUserBtn from "../assets/removeUser.svg";
@@ -19,7 +20,7 @@ const GroupDetails = () => {
 
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
-
+  const { hasPermission } = usePermissions(); // Use the custom hook
   useEffect(() => {
     const fetchGroupData = async () => {
       try {
@@ -205,18 +206,22 @@ const GroupDetails = () => {
             </>
           ) : (
             <>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4"
-              >
-                EDIT
-              </button>{" "}
-              <button
-                onClick={handleDelete}
-                className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
-              >
-                DELETE
-              </button>
+              {hasPermission("patch:group") && (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+                >
+                  EDIT
+                </button>
+              )}
+              {hasPermission("delete:group") && (
+                <button
+                  onClick={handleDelete}
+                  className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+                >
+                  DELETE
+                </button>
+              )}
             </>
           )}
         </div>
