@@ -7,6 +7,7 @@ import xIcon from "../assets/close-circle-svgrepo-com 1.svg";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { usePermissions } from "./usePermissions";
 
 const StudentDetails = () => {
   const { id } = useParams();
@@ -30,6 +31,7 @@ const StudentDetails = () => {
     useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
   const [pendingAmount, setPendingAmount] = useState(0);
+  const { hasPermission } = usePermissions();
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -494,18 +496,22 @@ const StudentDetails = () => {
                 </div>
               ) : (
                 <div className="flex w-full gap-4 justify-between">
-                  <button
-                    onClick={handleAddGroup}
-                    className="w-1/2 bg-[#55DDE0] hover:scale-105 transition py-2 rounded-lg"
-                  >
-                    Add to Group
-                  </button>
-                  <button
-                    onClick={handleDeleteMode}
-                    className="w-1/2 bg-[#F26419] hover:scale-105 transition rounded-lg text-white"
-                  >
-                    Remove From Groups
-                  </button>
+                  {hasPermission("add:student_to_group") && (
+                    <button
+                      onClick={handleAddGroup}
+                      className="w-1/2 bg-[#55DDE0] hover:scale-105 transition py-2 rounded-lg"
+                    >
+                      Add to Group
+                    </button>
+                  )}
+                  {hasPermission("remove:student_from_group") && (
+                    <button
+                      onClick={handleDeleteMode}
+                      className="w-1/2 bg-[#F26419] hover:scale-105 transition py-2 rounded-lg text-white"
+                    >
+                      Remove From Groups
+                    </button>
+                  )}
                 </div>
               )}
             </div>
