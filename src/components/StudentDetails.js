@@ -568,12 +568,14 @@ const StudentDetails = () => {
                   </ul>
                 )}
               </div>
-              <button
-                onClick={handleAddPayment}
-                className="w-full bg-[#55DDE0] hover:scale-105 transition py-2 rounded-lg"
-              >
-                Add Payment
-              </button>
+              {hasPermission("create:payment") && (
+                <button
+                  onClick={handleAddPayment}
+                  className="w-full bg-[#55DDE0] hover:scale-105 transition py-2 rounded-lg"
+                >
+                  Add Payment
+                </button>
+              )}
             </div>
           </div>
         )}
