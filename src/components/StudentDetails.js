@@ -551,17 +551,18 @@ const StudentDetails = () => {
                         >
                           <span>${payment.amount}</span>
                           <span>{new Date(payment.date).toLocaleString()}</span>
-                          {hoveredPaymentId === payment.id && (
-                            <button
-                              onClick={() => {
-                                setPaymentToDelete(payment);
-                                setShowConfirmDeletePaymentPopup(true);
-                              }}
-                              className="absolute right-1/2 top-1/2 transform -translate-y-1/2 translate-x-1/2 text-white font-semibold"
-                            >
-                              DELETE
-                            </button>
-                          )}
+                          {hoveredPaymentId === payment.id &&
+                            hasPermission("delete:payment") && (
+                              <button
+                                onClick={() => {
+                                  setPaymentToDelete(payment);
+                                  setShowConfirmDeletePaymentPopup(true);
+                                }}
+                                className="absolute right-1/2 top-1/2 transform -translate-y-1/2 translate-x-1/2 text-white font-semibold"
+                              >
+                                DELETE
+                              </button>
+                            )}
                         </li>
                       ))}
                   </ul>
