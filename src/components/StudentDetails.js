@@ -397,18 +397,22 @@ const StudentDetails = () => {
             </>
           ) : (
             <>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4"
-              >
-                EDIT
-              </button>
-              <button
-                onClick={() => setShowConfirmPopup(true)}
-                className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
-              >
-                DELETE
-              </button>
+              {hasPermission("patch:student") && (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-[#AEC8DB] text-[#2F4858] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+                >
+                  EDIT
+                </button>
+              )}
+              {hasPermission("delete:student") && (
+                <button
+                  onClick={() => setShowConfirmPopup(true)}
+                  className="bg-[#F26419] text-[#FFDB9B] hover:scale-110 transition h-fit rounded-md py-2 px-4"
+                >
+                  DELETE
+                </button>
+              )}
             </>
           )}
         </div>
