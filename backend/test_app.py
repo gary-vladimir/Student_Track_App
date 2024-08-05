@@ -198,6 +198,27 @@ class TestApp(unittest.TestCase):
 
         self.assertEqual(response.status_code, 401)
 
+    def test_create_student_success_admin(self):
+        headers = {"Authorization": f"Bearer {self.admin_token}"}
+        data = {"name": "New Student", "parent_phone_number": "1234567890"}
+        response = self.client.post("/api/students", json=data, headers=headers)
+        result = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(result["name"], "New Student")
+
+    def test_create_student_fail_teacher(self):
+        headers = {"Authorization": f"Bearer {self.teacher_token}"}
+        data = {"name": "New Student", "parent_phone_number": "1234567890"}
+        response = self.client.post("/api/students", json=data, headers=headers)
+        self.assertEqual(response.status_code, 403)
+
+    def test_create_student_fail_no_permission(self):
+        headers = {"Authorization": f"Bearer {self.invalid_token}"}
+        data = {"name": "New Student", "parent_phone_number": "1234567890"}
+        response = self.client.post("/api/students", json=data, headers=headers)
+        self.assertEqual(response.status_code, 401)
+
 
 class CustomTestResult(unittest.TextTestResult):
     def addSuccess(self, test):
