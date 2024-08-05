@@ -5,7 +5,7 @@ const Login = () => {
   const { loginWithRedirect } = useAuth0();
 
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="absolute right-1/2 top-1/2 translate-x-1/2 -translate-y-1/2">
       <div className="bg-white w-[450px] flex flex-col items-center p-8 rounded-lg shadow-md">
         <h1 className="text-3xl font-bold mb-4 text-[#2F4858]">
           Student Track App
