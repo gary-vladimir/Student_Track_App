@@ -269,16 +269,17 @@ const GroupDetails = () => {
           </thead>
           <tbody>
             {editedStudents.map((student) => (
-              <tr
-                key={student.id}
-                onClick={() => handleStudentClick(student.id)}
-                className="hover:bg-[#c4d6e4] transition hover:cursor-pointer"
-              >
+              <tr key={student.id} className="hover:bg-[#c4d6e4]">
                 <td className="py-2 px-4 border-b  border-[#69A1CB]">
                   {student.id}
                 </td>
                 <td className="py-2 px-4 border-b  border-[#69A1CB]">
-                  {student.name}
+                  <div
+                    onClick={() => handleStudentClick(student.id)}
+                    className="transition hover:cursor-pointer"
+                  >
+                    {student.name}
+                  </div>
                 </td>
                 <td className="py-2 px-4 border-b  border-[#69A1CB]">
                   {studentPaymentStatus[student.id] || "Loading..."}
