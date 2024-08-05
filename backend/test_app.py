@@ -154,6 +154,50 @@ class TestApp(unittest.TestCase):
         response = self.client.delete(f"/api/groups/{group.id}", headers=headers)
         self.assertEqual(response.status_code, 401)
 
+    def test_update_group_success_admin(self):
+        with app.app_context():
+            group = Group(title="Test Group", group_cost=100)
+            db.session.add(group)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.admin_token}"}
+        data = {"group_cost": 150}
+        response = self.client.patch(
+            f"/api/groups/{group.id}", json=data, headers=headers
+        )
+        result = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(result["group_cost"], 150)
+
+    def test_update_group_fail_teacher(self):
+        with app.app_context():
+            group = Group(title="Test Group", group_cost=100)
+            db.session.add(group)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.teacher_token}"}
+        data = {"group_cost": 150}
+        response = self.client.patch(
+            f"/api/groups/{group.id}", json=data, headers=headers
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_update_group_fail_no_permission(self):
+        with app.app_context():
+            group = Group(title="Test Group", group_cost=100)
+            db.session.add(group)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.invalid_token}"}
+        data = {"group_cost": 150}
+        response = self.client.patch(
+            f"/api/groups/{group.id}", json=data, headers=headers
+        )
+
+        self.assertEqual(response.status_code, 401)
+
 
 class CustomTestResult(unittest.TextTestResult):
     def addSuccess(self, test):
