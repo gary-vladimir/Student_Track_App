@@ -285,6 +285,51 @@ class TestApp(unittest.TestCase):
 
         self.assertEqual(response.status_code, 401)
 
+    def test_add_payment_success_admin(self):
+        with app.app_context():
+            student = Student(name="Test Student", parent_phone_number="1234567890")
+            db.session.add(student)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.admin_token}"}
+        data = {"amount": 100}
+        response = self.client.post(
+            f"/api/students/{student.id}/payments", json=data, headers=headers
+        )
+        result = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(result["amount"], 100)
+
+    def test_add_payment_success_teacher(self):
+        with app.app_context():
+            student = Student(name="Test Student", parent_phone_number="1234567890")
+            db.session.add(student)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.teacher_token}"}
+        data = {"amount": 100}
+        response = self.client.post(
+            f"/api/students/{student.id}/payments", json=data, headers=headers
+        )
+        result = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(result["amount"], 100)
+
+    def test_add_payment_fail_no_permission(self):
+        with app.app_context():
+            student = Student(name="Test Student", parent_phone_number="1234567890")
+            db.session.add(student)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.invalid_token}"}
+        data = {"amount": 100}
+        response = self.client.post(
+            f"/api/students/{student.id}/payments", json=data, headers=headers
+        )
+        self.assertEqual(response.status_code, 401)
+
 
 class CustomTestResult(unittest.TextTestResult):
     def addSuccess(self, test):
