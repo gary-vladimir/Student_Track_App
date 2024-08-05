@@ -1,12 +1,14 @@
 import unittest
 import json
 import os
+import warnings
 from app import app
 from models import db, Group, Student, Payment
 from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 class TestApp(unittest.TestCase):
@@ -19,6 +21,9 @@ class TestApp(unittest.TestCase):
 
         self.admin_token = os.getenv("ADMIN_JWT_TOKEN")
         self.teacher_token = os.getenv("TEACHER_JWT_TOKEN")
+
+        if not self.admin_token or not self.teacher_token:
+            raise ValueError("JWT tokens not found in environment variables")
 
     def tearDown(self):
         with app.app_context():
@@ -71,5 +76,22 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.status_code, 403)
 
 
+class CustomTestResult(unittest.TextTestResult):
+    def addSuccess(self, test):
+        super().addSuccess(test)
+        self.stream.write("PASS ")
+        self.stream.flush()
+
+
 if __name__ == "__main__":
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestApp)
+    runner = unittest.TextTestRunner(verbosity=2, resultclass=CustomTestResult)
+    result = runner.run(suite)
+
+    print(f"\nRan {result.testsRun} tests")
+    if result.wasSuccessful():
+        print("All tests PASSED!")
+    else:
+        print(
+            f"Tests FAILED. Failures: {len(result.failures)}, Errors: {len(result.errors)}"
+        )
