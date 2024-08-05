@@ -252,6 +252,39 @@ class TestApp(unittest.TestCase):
         response = self.client.get("/api/students", headers=headers)
         self.assertEqual(response.status_code, 401)
 
+    def test_delete_student_success_admin(self):
+        with app.app_context():
+            student = Student(name="Test Student", parent_phone_number="1234567890")
+            db.session.add(student)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.admin_token}"}
+        response = self.client.delete(f"/api/students/{student.id}", headers=headers)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_student_fail_teacher(self):
+        with app.app_context():
+            student = Student(name="Test Student", parent_phone_number="1234567890")
+            db.session.add(student)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.teacher_token}"}
+        response = self.client.delete(f"/api/students/{student.id}", headers=headers)
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_student_fail_no_permission(self):
+        with app.app_context():
+            student = Student(name="Test Student", parent_phone_number="1234567890")
+            db.session.add(student)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.invalid_token}"}
+        response = self.client.delete(f"/api/students/{student.id}", headers=headers)
+
+        self.assertEqual(response.status_code, 401)
+
 
 class CustomTestResult(unittest.TextTestResult):
     def addSuccess(self, test):
