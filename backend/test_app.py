@@ -21,6 +21,7 @@ class TestApp(unittest.TestCase):
 
         self.admin_token = os.getenv("ADMIN_JWT_TOKEN")
         self.teacher_token = os.getenv("TEACHER_JWT_TOKEN")
+        self.invalid_token = "invalid_token"
 
         if not self.admin_token or not self.teacher_token:
             raise ValueError("JWT tokens not found in environment variables")
@@ -58,6 +59,11 @@ class TestApp(unittest.TestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["title"], "Test Group")
 
+    def test_get_groups_fail_no_permission(self):
+        headers = {"Authorization": f"Bearer {self.invalid_token}"}
+        response = self.client.get("/api/groups", headers=headers)
+        self.assertEqual(response.status_code, 401)
+
     def test_create_group_success_admin(self):
         headers = {"Authorization": f"Bearer {self.admin_token}"}
         data = {"title": "New Group", "group_cost": 150}
@@ -74,6 +80,12 @@ class TestApp(unittest.TestCase):
         response = self.client.post("/api/groups", json=data, headers=headers)
 
         self.assertEqual(response.status_code, 403)
+
+    def test_create_group_fail_no_permission(self):
+        headers = {"Authorization": f"Bearer {self.invalid_token}"}
+        data = {"title": "New Group", "group_cost": 150}
+        response = self.client.post("/api/groups", json=data, headers=headers)
+        self.assertEqual(response.status_code, 401)
 
 
 class CustomTestResult(unittest.TextTestResult):
