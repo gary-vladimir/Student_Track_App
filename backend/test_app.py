@@ -330,6 +330,33 @@ class TestApp(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
+    def test_get_payment_status_success_admin(self):
+        with app.app_context():
+            student = Student(name="Test Student", parent_phone_number="1234567890")
+            group = Group(title="Test Group", group_cost=100)
+            student.groups.append(group)
+            db.session.add(student)
+            db.session.add(group)
+            db.session.commit()
+
+        headers = {"Authorization": f"Bearer {self.admin_token}"}
+        response = self.client.get(
+            f"/api/students/{student.id}/payment_status", headers=headers
+        )
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("status", data)
+        self.assertIn("pending_amount", data)
+
+    def test_get_payment_status_success_teacher(self):
+        with app.app_context():
+            student = Student(name="Test Student", parent_phone_number="1234567890")
+            group = Group(title="Test Group", group_cost=100)
+            student.groups.append(group)
+            db.session.add(student)
+            db.session.add(group)
+
 
 class CustomTestResult(unittest.TextTestResult):
     def addSuccess(self, test):
