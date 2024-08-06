@@ -17,8 +17,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": CLIENT_ORIGIN_URL}})
 
 # Database configuration
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "postgresql://postgres:genio123@localhost:5432/student_track_app_db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL", "postgresql://postgres:genio123@localhost:5432/student_track_app_db"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -331,4 +331,4 @@ def handle_auth_error(ex):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
