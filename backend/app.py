@@ -11,7 +11,8 @@ from auth import requires_auth, AuthError
 
 load_dotenv()
 
-CLIENT_ORIGIN_URL = os.getenv("CLIENT_ORIGIN_URL")
+CLIENT_ORIGIN_URL = os.getenv("CLIENT_ORIGIN_URL", "http://localhost:3000")
+CORS(app, resources={r"/*": {"origins": CLIENT_ORIGIN_URL}})
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": CLIENT_ORIGIN_URL}})
