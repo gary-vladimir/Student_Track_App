@@ -6,6 +6,7 @@ import { usePermissions } from "./usePermissions";
 import BackBtn from "../assets/BackButton.svg";
 import addUserBtn from "../assets/addUser.svg";
 import removeUserBtn from "../assets/removeUser.svg";
+import config from "../config";
 
 const GroupDetails = () => {
   const { id } = useParams();
@@ -29,7 +30,7 @@ const GroupDetails = () => {
         });
 
         const groupResponse = await axios.get(
-          `http://127.0.0.1:5000/api/groups/${id}`,
+          `${config.API_URL}/api/groups/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -44,7 +45,7 @@ const GroupDetails = () => {
         const paymentStatusPromises = groupResponse.data.students.map(
           (student) =>
             axios.get(
-              `http://127.0.0.1:5000/api/students/${student.id}/payment_status`,
+              `${config.API_URL}/api/students/${student.id}/payment_status`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -89,7 +90,7 @@ const GroupDetails = () => {
         audience: "https://studenttrackapi.com",
       });
 
-      await axios.delete(`http://127.0.0.1:5000/api/groups/${id}`, {
+      await axios.delete(`${config.API_URL}/api/groups/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -107,7 +108,7 @@ const GroupDetails = () => {
       });
 
       const response = await axios.patch(
-        `http://127.0.0.1:5000/api/groups/${id}`,
+        `${config.API_URL}/api/groups/${id}`,
         {
           group_cost: parseInt(groupCost),
         },
@@ -131,7 +132,7 @@ const GroupDetails = () => {
       await Promise.all(
         removedStudents.map((student) =>
           axios.delete(
-            `http://127.0.0.1:5000/api/groups/${id}/students/${student.id}`,
+            `${config.API_URL}/api/groups/${id}/students/${student.id}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

@@ -8,6 +8,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { usePermissions } from "./usePermissions";
+import config from "../config";
 
 const StudentDetails = () => {
   const { id } = useParams();
@@ -41,12 +42,9 @@ const StudentDetails = () => {
         audience: "https://studenttrackapi.com",
       });
 
-      const response = await axios.get(
-        `http://127.0.0.1:5000/api/students/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`${config.API_URL}/api/students/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       const studentData = response.data;
       studentData.payments = studentData.payments || [];
@@ -57,7 +55,7 @@ const StudentDetails = () => {
       setLoading(false);
 
       const paymentStatusResponse = await axios.get(
-        `http://127.0.0.1:5000/api/students/${id}/payment_status`,
+        `${config.API_URL}/api/students/${id}/payment_status`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -78,7 +76,7 @@ const StudentDetails = () => {
       const token = await getAccessTokenSilently({
         audience: "https://studenttrackapi.com",
       });
-      await axios.delete(`http://127.0.0.1:5000/api/students/${id}`, {
+      await axios.delete(`${config.API_URL}/api/students/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/students");
@@ -93,7 +91,7 @@ const StudentDetails = () => {
         audience: "https://studenttrackapi.com",
       });
       await axios.delete(
-        `http://127.0.0.1:5000/api/students/${id}/payments/${paymentToDelete.id}`,
+        `${config.API_URL}/api/students/${id}/payments/${paymentToDelete.id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -111,7 +109,7 @@ const StudentDetails = () => {
         audience: "https://studenttrackapi.com",
       });
       await axios.delete(
-        `http://127.0.0.1:5000/api/groups/${groupToDelete.id}/students/${student.id}`,
+        `${config.API_URL}/api/groups/${groupToDelete.id}/students/${student.id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -139,7 +137,7 @@ const StudentDetails = () => {
         groups: student.groups || [],
       };
       await axios.patch(
-        `http://127.0.0.1:5000/api/students/${id}`,
+        `${config.API_URL}/api/students/${id}`,
         updatedStudent,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -157,7 +155,7 @@ const StudentDetails = () => {
       const token = await getAccessTokenSilently({
         audience: "https://studenttrackapi.com",
       });
-      const response = await axios.get("http://127.0.0.1:5000/api/groups", {
+      const response = await axios.get(`${config.API_URL}/api/groups`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const allGroups = response.data;
@@ -178,7 +176,7 @@ const StudentDetails = () => {
         audience: "https://studenttrackapi.com",
       });
       await axios.post(
-        `http://127.0.0.1:5000/api/groups/${groupId}/students`,
+        `${config.API_URL}/api/groups/${groupId}/students`,
         {
           student_id: student.id,
         },
@@ -202,7 +200,7 @@ const StudentDetails = () => {
         audience: "https://studenttrackapi.com",
       });
       await axios.post(
-        `http://127.0.0.1:5000/api/students/${id}/payments`,
+        `${config.API_URL}/api/students/${id}/payments`,
         {
           amount: newPaymentAmount,
         },

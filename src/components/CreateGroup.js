@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import BackBtn from "../assets/BackButton.svg";
 import decoration from "../assets/add_group_decoration.svg";
+import config from "../config";
 
 const CreateGroup = () => {
   const [title, setTitle] = useState("");
@@ -21,7 +22,7 @@ const CreateGroup = () => {
       });
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/api/groups",
+        `${config.API_URL}/api/groups`,
         newGroup,
         {
           headers: {

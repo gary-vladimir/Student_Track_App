@@ -6,6 +6,7 @@ import studentBtn from "../assets/students_Button.svg";
 import "../scrollbar.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import config from "../config";
 
 const Home = () => {
   const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
@@ -23,7 +24,7 @@ const Home = () => {
           });
 
           // Fetch groups
-          const response = await axios.get("http://127.0.0.1:5000/api/groups", {
+          const response = await axios.get(`${config.API_URL}/api/groups`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

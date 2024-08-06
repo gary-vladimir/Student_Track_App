@@ -8,6 +8,7 @@ import decoration2 from "../assets/decorationPlants.svg";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import { usePermissions } from "./usePermissions";
+import config from "../config";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -24,7 +25,7 @@ const Students = () => {
         const token = await getAccessTokenSilently({
           audience: "https://studenttrackapi.com",
         });
-        const response = await axios.get("http://127.0.0.1:5000/api/students", {
+        const response = await axios.get(`${config.API_URL}/api/students`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -49,7 +50,7 @@ const Students = () => {
         audience: "https://studenttrackapi.com",
       });
       const response = await axios.post(
-        "http://127.0.0.1:5000/api/students",
+        `${config.API_URL}/api/students`,
         newStudent,
         {
           headers: {
